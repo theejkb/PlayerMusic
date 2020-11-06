@@ -1,9 +1,16 @@
 <template>
-<div class="app">
+<div class="player-container">
     <div class="background" :style="{ backgroundImage: 'url(' + image + ')' }" />
-    <v-card class="mx-auto player">
-        <Music :music="currentSong"></Music>
-        <div class="d-flex justify-space-around mb-6">
+    <v-card class="mx-auto player rounded-xl px-3" outlined>
+        <Music :value="duration" :music="currentSong" :skipInverse="skipInverse"></Music>
+        <v-card-text>
+            <v-card elevation="0" class="d-flex justify-space-between">
+                <span>{{ current_time }}</span>
+                <span>{{ duration }}</span>
+            </v-card>
+            <v-slider v-model="current_time" @change="seeking(current_time)" @click="onClickValue" step="1" min="0" :max="duration" thumb-color="black" track-color="rgba(0,0,0,0.5)" color="black"></v-slider>
+        </v-card-text>
+        <div class="d-flex justify-space-around">
             <v-btn @click="previous" class="ml-2 mt-3" fab icon height="40px" right width="40px">
                 <v-icon>mdi-skip-previous</v-icon>
             </v-btn>
@@ -18,8 +25,19 @@
             </v-btn>
         </div>
         <v-card-text>
-            <v-slider v-model="volume" @input="songVolume" step="0.01" append-icon="mdi-volume-high" prepend-icon="mdi-volume-low"></v-slider>
+            <v-slider v-model="volume" @input="songVolume" thumb-color="black" track-color="rgba(0,0,0,0.08)" color="black" step="0.01" min="0" max="1" append-icon="mdi-volume-high" prepend-icon="mdi-volume-low"></v-slider>
         </v-card-text>
+        <div class="d-flex justify-space-around mb-5">
+            <v-btn @click="showPlaylist" elevation="0" color="white">
+                <v-icon>mdi-music</v-icon>
+            </v-btn>
+            <v-btn elevation="0" color="white">
+                <v-icon>mdi-heart</v-icon>
+            </v-btn>
+            <v-btn elevation="0" color="white">
+                <v-icon>mdi-shuffle</v-icon>
+            </v-btn>
+        </div>
     </v-card>
 </div>
 </template>
@@ -93,19 +111,30 @@ export default {
         index_playing: 0,
         music: new Audio(),
         music_playing: -1,
-        volume: 1,
-        duration: 1,
-        current_time: 0,
+        volume: 0.5,
+        duration: 0,
+        current_time: "0:" + 0,
         isPlaying: false,
+        skipInverse: false,
+        duration_affichage: 0,
+        current_time_affichage: 0,
+        current_time_tmp: 0,
+        isRepeat: true,
+        showPlaylist: false,
     }),
 
     methods: {
+        showPlaylist() {
+            this.showPlaylist = !this.showPlaylist;
+            // TODO: voir la liste de lecture disponible (comme apple musique)
+        },
         previous() {
             if (this.musics[this.index_playing - 1]) {
                 this.index_playing -= 1;
             } else {
                 this.index_playing = this.musics.length - 1;
             }
+            this.skipInverse = true;
             this.music.src = this.musics[this.index_playing].mp3;
             this.playSong();
         },
@@ -116,8 +145,12 @@ export default {
                 this.index_playing = 0;
             }
             //On envoie le fichier mp3 de notre tableau à l'index souhaité
+            this.skipInverse = false;
             this.music.src = this.musics[this.index_playing].mp3;
             this.playSong();
+        },
+        endMusic() {
+            // TODO: changer de musique à la fin de lecture d'une musique
         },
         handleBtnPlaying() {
             this.isPlaying = !this.isPlaying;
@@ -133,6 +166,16 @@ export default {
         },
         songVolume() {
             return (this.music.volume = this.volume);
+        },
+        audioDuration() {
+            this.duration = this.music.duration;
+            return this.duration;
+        },
+        seeking(seek) {
+            if (this.music) this.music.currentTime = seek;
+        },
+        onClickValue() {
+            this.current_time;
         },
     },
     created() {
@@ -151,12 +194,20 @@ export default {
     },
     mounted() {
         this.music.src = this.currentSong.mp3;
+        this.duration = this.music.duration || 0;
+        this.music.addEventListener("timeupdate", () => {
+            this.duration = Math.round(this.music.duration) || 0;
+            this.current_time = this.music.currentTime;
+        });
+        this.music.addEventListener("durationchange", () => {
+            this.music.currentTime = this.current_time;
+        });
     },
 };
 </script>
 
 <style>
-.app {
+.player-container {
     background-color: black;
     height: 100%;
 }
@@ -175,7 +226,7 @@ export default {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    max-width: 80%;
+    width: 500px;
 }
 
 .v-card__actions {
