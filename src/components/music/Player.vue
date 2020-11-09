@@ -1,9 +1,11 @@
 <template>
   <div class="player-container mx-auto">
+      <transition name="fade">
     <div
       class="background"
       :style="{ backgroundImage: 'url(' + image + ')' }"
     />
+    </transition>
     <v-card class="mx-auto player rounded-xl px-3" outlined>
       <Music
         :affichage="showPlaylist_var"
@@ -12,10 +14,12 @@
         :skipInverse="skipInverse"
       ></Music>
       <div v-if="showPlaylists">
-        <p>Playing Next</p>
-        <v-btn @click="shuffleMusics(musics)"
-          ><v-icon>mdi-shuffle</v-icon></v-btn
-        >
+        <div class="d-flex justify-space-between">
+          <p>Playing Next</p>
+          <v-btn @click="shuffleMusics(musics)"
+            ><v-icon>mdi-shuffle</v-icon></v-btn
+          >
+        </div>
         <div class="musics-container">
           <!-- Boucle sur notre tableau de musique -->
           <div v-for="(music, idx) in musics" :key="idx">
@@ -273,6 +277,7 @@ export default {
         const j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
       }
+      return array;
     },
   },
   created() {
@@ -345,5 +350,13 @@ export default {
 ::-webkit-scrollbar {
   width: 0px;
   background: transparent; /* make scrollbar transparent */
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+  animation: .3s ease;
+}
+.fade-enter, .fade-leave /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>
