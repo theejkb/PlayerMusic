@@ -13,6 +13,9 @@
       ></Music>
       <div v-if="showPlaylists">
         <p>Playing Next</p>
+        <v-btn @click="shuffleMusics(musics)"
+          ><v-icon>mdi-shuffle</v-icon></v-btn
+        >
         <div class="musics-container">
           <!-- Boucle sur notre tableau de musique -->
           <div v-for="(music, idx) in musics" :key="idx">
@@ -249,6 +252,7 @@ export default {
       //   this.music.image = music.image;
       //   this.music.author = music.author;
       this.index_playing = music.id;
+      this.changeSong();
       this.playSong();
     },
     songVolume() {
@@ -264,7 +268,12 @@ export default {
     onClickValue() {
       this.current_time;
     },
-    currentMusicStatus() {},
+    shuffleMusics(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    },
   },
   created() {
     // fetch("https://jsonplaceholder.typicode.com/photos")
