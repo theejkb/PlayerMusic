@@ -2,7 +2,7 @@
 <div class="player-container">
     <div class="background" :style="{ backgroundImage: 'url(' + image + ')' }" />
     <v-card class="mx-auto player rounded-xl px-3" outlined>
-        <Music :value="duration" :music="currentSong" :skipInverse="skipInverse"></Music>
+        <Music :affichage="showPlaylist_var" :value="duration" :music="currentSong" :skipInverse="skipInverse"></Music>
         <v-card-text>
             <v-card elevation="0" class="d-flex justify-space-between">
                 <span>{{ current_time }}</span>
@@ -120,12 +120,21 @@ export default {
         current_time_affichage: 0,
         current_time_tmp: 0,
         isRepeat: true,
-        showPlaylist: false,
+        showPlaylists: false,
+        showPlaylist_var: '',
     }),
 
     methods: {
         showPlaylist() {
-            this.showPlaylist = !this.showPlaylist;
+            this.showPlaylists = !this.showPlaylists;
+            if (this.showPlaylists == true){
+                
+                this.showPlaylist_var = 'small';
+                console.log(this.showPlaylist_var);
+            } else {
+                this.showPlaylist_var = 'big';
+                console.log(this.showPlaylist_var);
+            }
             // TODO: voir la liste de lecture disponible (comme apple musique)
         },
         previous() {
@@ -177,6 +186,9 @@ export default {
         onClickValue() {
             this.current_time;
         },
+        currentMusicStatus() {
+            
+        }
     },
     created() {
         // fetch("https://jsonplaceholder.typicode.com/photos")
@@ -191,6 +203,7 @@ export default {
         image() {
             return this.currentSong.image;
         },
+        
     },
     mounted() {
         this.music.src = this.currentSong.mp3;

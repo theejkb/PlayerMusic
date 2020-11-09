@@ -1,5 +1,6 @@
 <template>
 <div>
+    <div v-if="affichage = 'big'">
     <v-img class="mt-5 image-music">
         <transition :name="skipInverse ? 'fade' : 'fade-inverse'">
             <v-img class="image rounded-xl" :src="music.image" :key="music.id" />
@@ -13,7 +14,10 @@
 
     <v-card-subtitle>
         <div>{{ this.music.author }}</div>
+        <p>{{this.affichage}}</p>
     </v-card-subtitle>
+    </div>
+    <div v-else>TEST</div>
 </div>
 </template>
 
@@ -23,6 +27,7 @@ export default {
     props: {
         music: {},
         skipInverse: Boolean,
+        affichage: String
     },
 };
 </script>
