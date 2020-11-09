@@ -1,6 +1,9 @@
 <template>
   <div class="player-container mx-auto">
-    <div class="background" :style="{ backgroundImage: 'url(' + image + ')' }" />
+    <div
+      class="background"
+      :style="{ backgroundImage: 'url(' + image + ')' }"
+    />
     <v-card class="mx-auto player rounded-xl px-3" outlined>
       <Music
         :affichage="showPlaylist_var"
@@ -10,15 +13,15 @@
       ></Music>
       <div v-if="showPlaylists">
         <p>Playing Next</p>
-         <div class="musics-container" >
-         <!-- Boucle sur notre tableau de musique -->
+        <div class="musics-container">
+          <!-- Boucle sur notre tableau de musique -->
           <div v-for="(music, idx) in musics" :key="idx">
-        <!-- On n'affiche pas la musique courante -->
-          <div @click="playThisSong(music)" v-if="music.id != idCurrentMusic ">
-            <Music :music="music" :affichage="showPlaylist_var" ></Music>
-        </div>
+            <!-- On n'affiche pas la musique courante -->
+            <div @click="playThisSong(music)" v-if="music.id != idCurrentMusic">
+              <Music :music="music" :affichage="showPlaylist_var"></Music>
+            </div>
           </div>
-          </div>        
+        </div>
       </div>
       <v-card-text>
         <v-card elevation="0" class="d-flex justify-space-between">
@@ -38,7 +41,15 @@
         ></v-slider>
       </v-card-text>
       <div class="d-flex justify-space-around">
-        <v-btn @click="previous" class="ml-2 mt-3" fab icon height="40px" right width="40px">
+        <v-btn
+          @click="previous"
+          class="ml-2 mt-3"
+          fab
+          icon
+          height="40px"
+          right
+          width="40px"
+        >
           <v-icon>mdi-skip-previous</v-icon>
         </v-btn>
         <v-card-actions>
@@ -55,7 +66,15 @@
             <v-icon v-else>mdi-pause</v-icon>
           </v-btn>
         </v-card-actions>
-        <v-btn @click="next" class="ml-2 mt-3" fab icon height="40px" right width="40px">
+        <v-btn
+          @click="next"
+          class="ml-2 mt-3"
+          fab
+          icon
+          height="40px"
+          right
+          width="40px"
+        >
           <v-icon>mdi-skip-next</v-icon>
         </v-btn>
       </div>
@@ -94,71 +113,71 @@ import Music from "./Music";
 export default {
   name: "Player",
   components: {
-    Music
+    Music,
   },
   data: () => ({
     musics: [
       {
-        id: 1,
+        id: 0,
         title: "The Curse of the Sad Mummy",
         image: require("../../assets/musics/img/mummy.jpg"),
         mp3: require("../../assets/musics/the-curse-of-the-sad-mummy-amumu-music-video-league-of-legends.mp3"),
-        author: "Riot Games"
+        author: "Riot Games",
       },
       {
-        id: 2,
+        id: 1,
         title: "POP/STARS",
         image: require("../../assets/musics/img/kda_popstars.jpg"),
         mp3: require("../../assets/musics/kda-popstars-ft-madison-beer-gi-dle-jaira-burns-music-video-league-of-legends.mp3"),
-        author: "K/DA (ft. Madison Beer, (G)I-DLE, Jaira Burns)"
+        author: "K/DA (ft. Madison Beer, (G)I-DLE, Jaira Burns)",
       },
       {
-        id: 3,
+        id: 2,
         title: "Ignite - Worlds 2016",
         image: require("../../assets/musics/img/zeddIgnite.jpg"),
         mp3: require("../../assets/musics/ignite-ft-zedd-worlds-2016-league-of-legends.mp3"),
-        author: "Riot Games (ft. Zedd)"
+        author: "Riot Games (ft. Zedd)",
       },
       {
-        id: 4,
+        id: 3,
         title: "Legends Never Die",
         image: require("../../assets/musics/img/legendsNeverDie.jpg"),
         mp3: require("../../assets/musics/legends-never-die-ft-against-the-current-worlds-2017-league-of-legends.mp3"),
-        author: "Riot Games (ft. Against The Current)"
+        author: "Riot Games (ft. Against The Current)",
       },
       {
-        id: 5,
+        id: 4,
         title: "RISE",
         image: require("../../assets/musics/img/rise.jpg"),
         mp3: require("../../assets/musics/rise-ft-the-glitch-mob-mako-and-the-word-alive-worlds-2018-league-of-legends (1).mp3"),
-        author: "Riot Games (ft. The Glitch Mob, Mako, and The Word Alive)"
+        author: "Riot Games (ft. The Glitch Mob, Mako, and The Word Alive)",
       },
       {
-        id: 6,
+        id: 5,
         title: "True Damage",
         image: require("../../assets/musics/img/truedamage_giants.jpg"),
         mp3: require("../../assets/musics/true-damage-giants-ft-becky-g-keke-palmer-soyeon-duckwrth-thutmose-league-of-legends.mp3"),
         author:
-          "GIANTS (ft. Becky G, Keke Palmer, SOYEON de (G)I-DLE, DUCKWRTH, Thutmose)"
+          "GIANTS (ft. Becky G, Keke Palmer, SOYEON de (G)I-DLE, DUCKWRTH, Thutmose)",
       },
       {
-        id: 7,
+        id: 6,
         title: "Warriors",
         image: require("../../assets/musics/img/warrios.jpg"),
         mp3: require("../../assets/musics/warriors-ft-imagine-dragons-worlds-2014-league-of-legends.mp3"),
-        author: "Riot Games (ft. Imagine Dragons)"
+        author: "Riot Games (ft. Imagine Dragons)",
       },
       {
-        id: 8,
+        id: 7,
         title: "Get Jinxed",
         image: require("../../assets/musics/img/getJinxed.jpg"),
         mp3: require("../../assets/musics/get-jinxed-jinx-music-video-league-of-legends.mp3"),
-        author: "Riot Games"
-      }
+        author: "Riot Games",
+      },
     ],
     index_playing: 0,
     music: new Audio(),
-    idCurrentMusic: 1,
+    idCurrentMusic: 0,
     music_playing: -1,
     volume: 0.5,
     duration: 0,
@@ -170,7 +189,7 @@ export default {
     current_time_tmp: 0,
     isRepeat: true,
     showPlaylists: false,
-    showPlaylist_var: ""
+    showPlaylist_var: "",
   }),
 
   methods: {
@@ -181,9 +200,7 @@ export default {
         console.log(this.showPlaylist_var);
       } else {
         this.showPlaylist_var = "big";
-        console.log(this.showPlaylist_var);
       }
-      // TODO: voir la liste de lecture disponible (comme apple musique)
     },
     previous() {
       if (this.musics[this.index_playing - 1]) {
@@ -192,9 +209,7 @@ export default {
         this.index_playing = this.musics.length - 1;
       }
       this.skipInverse = true;
-      this.music.src = this.musics[this.index_playing].mp3;
-      this.idCurrentMusic = this.musics[this.index_playing].id;
-      this.playSong();
+      this.changeSong();
     },
     next() {
       if (this.musics[this.index_playing + 1]) {
@@ -204,6 +219,10 @@ export default {
       }
       //On envoie le fichier mp3 de notre tableau à l'index souhaité
       this.skipInverse = false;
+      this.changeSong();
+    },
+    changeSong() {
+      this.current_time = 0;
       this.music.src = this.musics[this.index_playing].mp3;
       this.idCurrentMusic = this.musics[this.index_playing].id;
       this.playSong();
@@ -224,8 +243,13 @@ export default {
       this.music.play();
     },
     playThisSong(music) {
-        this.isPlaying = true;
-        music.play();
+      //   this.music.src = music.mp3;
+      this.idCurrentMusic = music.id;
+      //   this.music.title = music.title;
+      //   this.music.image = music.image;
+      //   this.music.author = music.author;
+      this.index_playing = music.id;
+      this.playSong();
     },
     songVolume() {
       return (this.music.volume = this.volume);
@@ -240,7 +264,7 @@ export default {
     onClickValue() {
       this.current_time;
     },
-    currentMusicStatus() {}
+    currentMusicStatus() {},
   },
   created() {
     // fetch("https://jsonplaceholder.typicode.com/photos")
@@ -254,7 +278,7 @@ export default {
     },
     image() {
       return this.currentSong.image;
-    }
+    },
   },
   mounted() {
     this.music.src = this.currentSong.mp3;
@@ -266,15 +290,14 @@ export default {
     this.music.addEventListener("durationchange", () => {
       this.music.currentTime = this.current_time;
     });
-  }
+  },
 };
 </script>
 
 <style>
-.musics-container{
-    height: 340px;
-    overflow: scroll;
-    
+.musics-container {
+  height: 340px;
+  overflow: scroll;
 }
 
 .player-container {
@@ -292,7 +315,7 @@ export default {
 }
 
 .player {
- position: absolute;
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -300,9 +323,9 @@ export default {
 }
 
 @media screen and (max-width: 500px) {
-  .player{
-      height: 100%;
-      margin-top: 0%;
+  .player {
+    height: 100%;
+    margin-top: 0%;
   }
 }
 
@@ -310,9 +333,8 @@ export default {
   padding: 0;
 }
 
-
 ::-webkit-scrollbar {
-    width: 0px;
-    background: transparent; /* make scrollbar transparent */
+  width: 0px;
+  background: transparent; /* make scrollbar transparent */
 }
 </style>
