@@ -19,7 +19,6 @@
         <Player />
     </v-main>
     <v-bottom-navigation
-    :value="value"
     color="primary"
     horizontal
   >

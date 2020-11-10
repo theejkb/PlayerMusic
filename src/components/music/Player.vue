@@ -1,6 +1,9 @@
 <template>
   <div class="player-container mx-auto">
-    <div class="background" :style="{ backgroundImage: 'url(' + image + ')' }" />
+    <div
+      class="background"
+      :style="{ backgroundImage: 'url(' + image + ')' }"
+    />
     <v-card class="mx-auto player rounded-xl px-3" outlined>
       <Music
         :affichage="showPlaylist_var"
@@ -27,7 +30,7 @@
       </div>
       <v-card-text>
         <v-card elevation="0" class="d-flex justify-space-between">
-          <span>{{getMusicTime()}}</span>
+          <span>{{ getMusicTime() }}</span>
           <span>{{ getMusicTimeEnd() }}</span>
         </v-card>
         <v-slider
@@ -43,7 +46,15 @@
         ></v-slider>
       </v-card-text>
       <div class="d-flex justify-space-around">
-        <v-btn @click="previous" class="ml-2 mt-3" fab icon height="40px" right width="40px">
+        <v-btn
+          @click="previous"
+          class="ml-2 mt-3"
+          fab
+          icon
+          height="40px"
+          right
+          width="40px"
+        >
           <v-icon>mdi-skip-previous</v-icon>
         </v-btn>
         <v-card-actions>
@@ -60,7 +71,15 @@
             <v-icon v-else>mdi-pause</v-icon>
           </v-btn>
         </v-card-actions>
-        <v-btn @click="next" class="ml-2 mt-3" fab icon height="40px" right width="40px">
+        <v-btn
+          @click="next"
+          class="ml-2 mt-3"
+          fab
+          icon
+          height="40px"
+          right
+          width="40px"
+        >
           <v-icon>mdi-skip-next</v-icon>
         </v-btn>
       </div>
@@ -84,10 +103,10 @@
       <div class="d-flex justify-end mb-5 align-baseline mx-5">
         <knob-control
           class="mr-auto"
-          :min=0
-          :max=1
-          :size=80
-          :stepSize=0.01
+          :min="0"
+          :max="1"
+          :size="80"
+          :stepSize="0.01"
           primary-color="#adadad"
           secondary-color="#dedede"
           text-color="#636363"
@@ -95,7 +114,12 @@
           v-model="volume"
         ></knob-control>
         <v-icon class="mx-5" @click="showPlaylist">mdi-library</v-icon>
-        <v-icon class="mx-5" @click="likeThisSong(currentSong)" :color="colorSongLiked">mdi-heart</v-icon>
+        <v-icon
+          class="mx-5"
+          @click="likeThisSong(currentSong)"
+          :color="colorSongLiked"
+          >mdi-heart</v-icon
+        >
         <v-icon class="mx-5">mdi-shuffle</v-icon>
       </div>
     </v-card>
@@ -110,7 +134,7 @@ export default {
   name: "Player",
   components: {
     Music,
-    KnobControl
+    KnobControl,
   },
   data: () => ({
     musics: [
@@ -119,35 +143,40 @@ export default {
         title: "The Curse of the Sad Mummy",
         image: require("../../assets/musics/img/mummy.jpg"),
         mp3: require("../../assets/musics/the-curse-of-the-sad-mummy-amumu-music-video-league-of-legends.mp3"),
-        author: "Riot Games"
+        author: "Riot Games",
+        liked: false,
       },
       {
         id: 1,
         title: "POP/STARS",
         image: require("../../assets/musics/img/kda_popstars.jpg"),
         mp3: require("../../assets/musics/kda-popstars-ft-madison-beer-gi-dle-jaira-burns-music-video-league-of-legends.mp3"),
-        author: "K/DA (ft. Madison Beer, (G)I-DLE, Jaira Burns)"
+        author: "K/DA (ft. Madison Beer, (G)I-DLE, Jaira Burns)",
+        liked: false,
       },
       {
         id: 2,
         title: "Ignite - Worlds 2016",
         image: require("../../assets/musics/img/zeddIgnite.jpg"),
         mp3: require("../../assets/musics/ignite-ft-zedd-worlds-2016-league-of-legends.mp3"),
-        author: "Riot Games (ft. Zedd)"
+        author: "Riot Games (ft. Zedd)",
+        liked: false,
       },
       {
         id: 3,
         title: "Legends Never Die",
         image: require("../../assets/musics/img/legendsNeverDie.jpg"),
         mp3: require("../../assets/musics/legends-never-die-ft-against-the-current-worlds-2017-league-of-legends.mp3"),
-        author: "Riot Games (ft. Against The Current)"
+        author: "Riot Games (ft. Against The Current)",
+        liked: false,
       },
       {
         id: 4,
         title: "RISE",
         image: require("../../assets/musics/img/rise.jpg"),
         mp3: require("../../assets/musics/rise-ft-the-glitch-mob-mako-and-the-word-alive-worlds-2018-league-of-legends (1).mp3"),
-        author: "Riot Games (ft. The Glitch Mob, Mako, and The Word Alive)"
+        author: "Riot Games (ft. The Glitch Mob, Mako, and The Word Alive)",
+        liked: false,
       },
       {
         id: 5,
@@ -155,22 +184,25 @@ export default {
         image: require("../../assets/musics/img/truedamage_giants.jpg"),
         mp3: require("../../assets/musics/true-damage-giants-ft-becky-g-keke-palmer-soyeon-duckwrth-thutmose-league-of-legends.mp3"),
         author:
-          "GIANTS (ft. Becky G, Keke Palmer, SOYEON de (G)I-DLE, DUCKWRTH, Thutmose)"
+          "GIANTS (ft. Becky G, Keke Palmer, SOYEON de (G)I-DLE, DUCKWRTH, Thutmose)",
+        liked: false,
       },
       {
         id: 6,
         title: "Warriors",
         image: require("../../assets/musics/img/warrios.jpg"),
         mp3: require("../../assets/musics/warriors-ft-imagine-dragons-worlds-2014-league-of-legends.mp3"),
-        author: "Riot Games (ft. Imagine Dragons)"
+        author: "Riot Games (ft. Imagine Dragons)",
+        liked: false,
       },
       {
         id: 7,
         title: "Get Jinxed",
         image: require("../../assets/musics/img/getJinxed.jpg"),
         mp3: require("../../assets/musics/get-jinxed-jinx-music-video-league-of-legends.mp3"),
-        author: "Riot Games"
-      }
+        author: "Riot Games",
+        liked: false,
+      },
     ],
     rating: 0,
     someValue: 30,
@@ -189,7 +221,7 @@ export default {
     showPlaylist_var: "",
     likedSong: [],
     colorSongLiked: "",
-    songLiked: false
+    songLiked: false,
   }),
 
   methods: {
@@ -222,12 +254,12 @@ export default {
       this.changeSong();
     },
     changeSong() {
-      //Reinitialisation des params des toutes les variables propres à this.music 
+      //Reinitialisation des params des toutes les variables propres à this.music
       this.current_time = 0;
       this.music.src = this.musics[this.index_playing].mp3;
       this.idCurrentMusic = this.musics[this.index_playing].id;
       this.music.volume = this.volume;
-      this.unlikeSong();
+      this.checkLikedSong();
       this.playSong();
     },
     endSong() {
@@ -274,7 +306,6 @@ export default {
       let m = Math.floor(time / 60);
       s = s < 10 ? "0" + s : s;
       m = m < 10 ? "0" + m : m;
-
       let display = +m + ":" + s;
       return (this.time_affichage = display);
     },
@@ -284,10 +315,8 @@ export default {
       let timeleft = duration - timePass;
       let s = timeleft % 60;
       let m = Math.floor(timeleft / 60) % 60;
-
       s = s < 10 ? "0" + s : s;
       m = m < 10 ? "0" + m : m;
-
       let display = "-" + m + ":" + s;
       return (this.end_time_affichage = display);
     },
@@ -306,26 +335,34 @@ export default {
       song.author = music.author;
       song.image = music.image;
       song.id = music.id;
-      song.liked = false;
-      if (this.song.liked == false) {
+      song.liked = music.liked;
+      if (music.liked == false) {
+        song.liked = true;
         this.likeSong();
-        this.song.liked = true;
         this.likedSong.push(song);
       } else {
         this.unlikeSong();
+        // TODO : Remove a song when unlicked
         this.likedSong = this.likedSong.filter(
-          item => item.id !== this.song.id
+          (item) => item.id !== this.song.id
         );
       }
     },
-    // likeSong() {
-    //   this.colorSongLiked = "red";
-    //   this.songLiked = true;
-    // },
-    // unlikeSong() {
-    //   this.colorSongLiked = "";
-    //   this.songLiked = false;
-    // }
+    likeSong() {
+      this.colorSongLiked = "red";
+      this.currentSong.liked = true;
+    },
+    unlikeSong() {
+      this.colorSongLiked = "";
+      this.currentSong.liked = false;
+    },
+    checkLikedSong() {
+      if (this.currentSong.liked == true) {
+        this.colorSongLiked = "red";
+      } else {
+        this.colorSongLiked = "";
+      }
+    },
   },
   created() {
     // fetch("https://jsonplaceholder.typicode.com/photos")
@@ -339,7 +376,7 @@ export default {
     },
     image() {
       return this.currentSong.image;
-    }
+    },
   },
   mounted() {
     this.music.src = this.currentSong.mp3;
@@ -351,7 +388,7 @@ export default {
     this.music.addEventListener("durationchange", () => {
       this.music.currentTime = this.current_time;
     });
-  }
+  },
 };
 </script>
 
