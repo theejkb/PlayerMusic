@@ -84,25 +84,19 @@
       <div class="d-flex justify-end mb-5 align-baseline mx-5">
         <knob-control
           class="mr-auto"
-          min="0"
-          max="1"
-          size="75"
-          stepSize="0.01"
+          :min=0
+          :max=1
+          :size=80
+          :stepSize=0.01
           primary-color="#adadad"
           secondary-color="#dedede"
           text-color="#636363"
           @input="songVolume"
           v-model="volume"
         ></knob-control>
-        <v-btn @click="showPlaylist" elevation="0" color="white">
-          <v-icon>mdi-music</v-icon>
-        </v-btn>
-        <v-btn elevation="0" color="white">
-          <v-icon @click="likeThisSong(currentSong)">mdi-heart</v-icon>
-        </v-btn>
-        <v-btn elevation="0" color="white">
-          <v-icon>mdi-shuffle</v-icon>
-        </v-btn>
+        <v-icon class="mx-5" @click="showPlaylist">mdi-library</v-icon>
+        <v-icon class="mx-5" @click="likeThisSong(currentSong)" :color="colorSongLiked">mdi-heart</v-icon>
+        <v-icon class="mx-5">mdi-shuffle</v-icon>
       </div>
     </v-card>
   </div>
@@ -184,7 +178,7 @@ export default {
     music: new Audio(),
     idCurrentMusic: 0,
     music_playing: -1,
-    volume: 0,
+    volume: 0.3,
     duration: 0,
     current_time: 0,
     current_time_affichage: "0:00",
@@ -193,7 +187,9 @@ export default {
     skipInverse: false,
     showPlaylists: false,
     showPlaylist_var: "",
-    likedSong: {}
+    likedSong: [],
+    colorSongLiked: "",
+    songLiked: false
   }),
 
   methods: {
@@ -226,9 +222,12 @@ export default {
       this.changeSong();
     },
     changeSong() {
+      //Reinitialisation des params des toutes les variables propres à this.music 
       this.current_time = 0;
       this.music.src = this.musics[this.index_playing].mp3;
       this.idCurrentMusic = this.musics[this.index_playing].id;
+      this.music.volume = this.volume;
+      this.unlikeSong();
       this.playSong();
     },
     endSong() {
@@ -302,15 +301,31 @@ export default {
     },
     likeThisSong(music) {
       let song = {};
-      song.id = music.id;
       song.title = music.title;
       song.mp3 = music.mp3;
       song.author = music.author;
       song.image = music.image;
-
-      this.likedSong.put(song);
-      console.log(this.likedSong);
-    }
+      song.id = music.id;
+      song.liked = false;
+      if (this.song.liked == false) {
+        this.likeSong();
+        this.song.liked = true;
+        this.likedSong.push(song);
+      } else {
+        this.unlikeSong();
+        this.likedSong = this.likedSong.filter(
+          item => item.id !== this.song.id
+        );
+      }
+    },
+    // likeSong() {
+    //   this.colorSongLiked = "red";
+    //   this.songLiked = true;
+    // },
+    // unlikeSong() {
+    //   this.colorSongLiked = "";
+    //   this.songLiked = false;
+    // }
   },
   created() {
     // fetch("https://jsonplaceholder.typicode.com/photos")

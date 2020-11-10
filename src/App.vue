@@ -18,6 +18,29 @@
     <v-main>
         <Player />
     </v-main>
+    <v-bottom-navigation
+    :value="value"
+    color="primary"
+    horizontal
+  >
+    <v-btn>
+      <span>Songs</span>
+
+      <v-icon>mdi-music-note</v-icon>
+    </v-btn>
+
+    <v-btn>
+      <span>Playlist</span>
+
+      <v-icon>mdi-playlist-play</v-icon>
+    </v-btn>
+
+    <v-btn>
+      <span>Search</span>
+
+      <v-icon>mdi-search</v-icon>
+    </v-btn>
+  </v-bottom-navigation>
 </v-app>
 </template>
 
