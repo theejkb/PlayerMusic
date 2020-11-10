@@ -119,11 +119,5 @@ export default {
 };
 </script>
 <style>
-html {
-  overflow:   scroll;
-}
-::-webkit-scrollbar {
-    width: 0px;
-    background: transparent; /* make scrollbar transparent */
-}
+
 </style>

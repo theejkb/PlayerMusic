@@ -10,7 +10,10 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "v-rating": "^1.1.2",
     "vue": "^2.6.11",
+    "vue-dynamic-star-rating": "^1.0.8",
+    "vue-knob-control": "^1.6.0",
     "vue-scrollable-container": "^1.8.2",
     "vuetify": "^2.2.11"
   },
