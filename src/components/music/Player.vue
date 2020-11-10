@@ -1,11 +1,9 @@
 <template>
   <div class="player-container mx-auto">
-      <transition name="fade">
     <div
       class="background"
       :style="{ backgroundImage: 'url(' + image + ')' }"
     />
-    </transition>
     <v-card class="mx-auto player rounded-xl px-3" outlined>
       <Music
         :affichage="showPlaylist_var"
@@ -352,11 +350,7 @@ export default {
   background: transparent; /* make scrollbar transparent */
 }
 
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
-  animation: .3s ease;
-}
-.fade-enter, .fade-leave /* .fade-leave-active below version 2.1.8 */ {
-  opacity: 0;
+.background{
+  transition: .3s ease-out;
 }
 </style>
