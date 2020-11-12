@@ -116,7 +116,7 @@
         <v-icon class="mx-5" @click="showPlaylist">mdi-library</v-icon>
         <v-icon
           class="mx-5"
-          @click="likeThisSong(currentSong)"
+          @click="handleBtnLike(currentSong)"
           :color="colorSongLiked"
           >mdi-heart</v-icon
         >
@@ -328,13 +328,15 @@ export default {
       }
       return array;
     },
-    likeThisSong(music) {
+    handleBtnLike(music) {
       let song = {};
       song.title = music.title;
       song.mp3 = music.mp3;
       song.author = music.author;
       song.image = music.image;
       song.id = music.id;
+      console.log(song.id);
+      
       song.liked = music.liked;
       if (music.liked == false) {
         song.liked = true;
@@ -342,10 +344,9 @@ export default {
         this.likedSong.push(song);
       } else {
         this.unlikeSong();
-        // TODO : Remove a song when unlicked
-        this.likedSong = this.likedSong.filter(
-          (item) => item.id !== this.song.id
-        );
+        // Remove a song when unlicked
+        let val = this.likedSong.indexOf(song.id);
+        this.likedSong.splice(val, 1);       
       }
     },
     likeSong() {
