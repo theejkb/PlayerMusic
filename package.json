@@ -9,17 +9,22 @@
     "prod": "npm run build && firebase deploy"
   },
   "dependencies": {
+    "@mdi/font": "^5.8.55",
+    "animate.css": "^4.1.1",
     "core-js": "^3.6.5",
+    "register-service-worker": "^1.7.1",
     "v-rating": "^1.1.2",
     "vue": "^2.6.11",
     "vue-dynamic-star-rating": "^1.0.8",
     "vue-knob-control": "^1.6.0",
+    "vue-router": "^3.4.9",
     "vue-scrollable-container": "^1.8.2",
     "vuetify": "^2.2.11"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-plugin-pwa": "^4.5.8",
     "@vue/cli-service": "~4.5.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.8.0",
