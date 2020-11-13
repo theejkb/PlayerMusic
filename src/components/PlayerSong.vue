@@ -1,48 +1,127 @@
 <template>
-  <v-card class="PlayerBottom">
-    <v-list>
-      <v-list-item>
-        <v-img class="ml-1 rounded image" :src="image" />
+  <div>
+    <Music
+      :affichage="showPlaylist_var"
+      :value="duration"
+      :music="currentSong"
+      :skipInverse="skipInverse"
+    ></Music>
+    <div v-if="showPlaylists">
+      <div class="d-flex justify-space-between">
+        <p>Playing Next</p>
+        <v-btn @click="shuffleMusics(musics)" elevation="0" color="white">
+          <v-icon>mdi-shuffle</v-icon>
+        </v-btn>
+      </div>
+      <div class="musics-container">
+        <!-- Boucle sur notre tableau de musique -->
+        <div v-for="(music, idx) in musics" :key="idx">
+          <!-- On n'affiche pas la musique courante -->
+          <div @click="playThisSong(music)" v-if="music.id != idCurrentMusic">
+            <Music :music="music" :affichage="showPlaylist_var"></Music>
+          </div>
+        </div>
+      </div>
+    </div>
+    <v-card-text>
+      <v-card elevation="0" class="d-flex justify-space-between">
+        <span>{{ getMusicTime() }}</span>
+        <span>{{ getMusicTimeEnd() }}</span>
+      </v-card>
+      <v-slider
+        v-model="current_time"
+        @change="seeking(current_time)"
+        @click="onClickValue"
+        step="1"
+        min="0"
+        :max="duration"
+        thumb-color="#b0b0b0"
+        track-color="#ebebeb"
+        color="#adadad"
+      ></v-slider>
+    </v-card-text>
+    <div class="d-flex justify-space-around">
+      <v-btn @click="previous" class="ml-2 mt-3" fab icon height="40px" right width="40px">
+        <v-icon>mdi-skip-previous</v-icon>
+      </v-btn>
+      <v-card-actions>
+        <v-btn
+          @click="handleBtnPlaying()"
+          class="ml-2 mt-3"
+          fab
+          icon
+          height="40px"
+          right
+          width="40px"
+        >
+          <v-icon v-if="isPlaying == false">mdi-play</v-icon>
+          <v-icon v-else>mdi-pause</v-icon>
+        </v-btn>
+      </v-card-actions>
+      <v-btn @click="next" class="ml-2 mt-3" fab icon height="40px" right width="40px">
+        <v-icon>mdi-skip-next</v-icon>
+      </v-btn>
+    </div>
 
-        <v-card-text >
-          <b>{{currentSong.title}}</b>
-        </v-card-text>
-        <v-spacer></v-spacer>
-        <v-list-item-icon>
-          <v-btn @click="handleBtnPlaying()" icon color="black">
-            <v-icon v-if="isPlaying == false">mdi-play</v-icon>
-            <v-icon v-else>mdi-pause</v-icon>
-          </v-btn>
-        </v-list-item-icon>
+    <!-- <v-card-text>
+        <v-slider
+          v-model="volume"
+          @input="songVolume"
+          thumb-color="black"
+          track-color="rgba(0,0,0,0.08)"
+          color="black"
+          step="0.01"
+          min="0"
+          max="1"
+          append-icon="mdi-volume-high"
+          prepend-icon="mdi-volume-low"
+        ></v-slider>
+    </v-card-text>-->
+    <v-card-text class="d-flex"></v-card-text>
 
-        <v-list-item-icon>
-          <v-btn icon @click="next">
-            <v-icon color="black">mdi-skip-next</v-icon>
-          </v-btn>
-        </v-list-item-icon>
-      </v-list-item>
-    </v-list>
-  </v-card>
+    <div class="d-flex justify-end mb-5 align-baseline mx-5">
+      <knob-control
+        class="mr-auto"
+        :min="0"
+        :max="1"
+        :size="80"
+        :stepSize="0.01"
+        primary-color="#adadad"
+        secondary-color="#dedede"
+        text-color="#636363"
+        @input="songVolume"
+        v-model="volume"
+      ></knob-control>
+      <v-icon class="mx-5" @click="showPlaylist">mdi-library</v-icon>
+      <v-icon class="mx-5" @click="handleBtnLike(currentSong)" :color="colorSongLiked">mdi-heart</v-icon>
+      <v-icon class="mx-5">mdi-shuffle</v-icon>
+    </div>
+  </div>
 </template>
 
 <script>
-// import Music from "./Music";
-// import KnobControl from "vue-knob-control";
+import Music from "./music/Music";
+import KnobControl from "vue-knob-control";
 
 export default {
-  name: "Player",
+  name: "PlayerSong",
   components: {
-    // Music,
-    // KnobControl,
+    Music,
+    KnobControl
   },
   data: () => ({
+    rating: 0,
     someValue: 30,
+    index_playing: 0,
     music: new Audio(),
     idCurrentMusic: 0,
+    music_playing: -1,
     volume: 0.3,
     duration: 0,
     current_time: 0,
-    isPlaying: true,
+    current_time_affichage: "0:00",
+    end_time_affichage: "0:00",
+    isPlaying: false,
     skipInverse: false,
     showPlaylists: false,
     showPlaylist_var: "",
@@ -51,13 +130,10 @@ export default {
     songLiked: false
   }),
   props: {
-    player: Array,
+    player: {},
     idMusic: Number,
   },
   methods: {
-    playerImage() {
-      return "../../" + this.player.image;
-    },
     showPlaylist() {
       this.showPlaylists = !this.showPlaylists;
       if (this.showPlaylists == true) {
@@ -68,19 +144,19 @@ export default {
       }
     },
     previous() {
-      if (this.player[this.idMusic - 1]) {
-        this.idMusic -= 1;
+      if (this.musics[this.index_playing - 1]) {
+        this.index_playing -= 1;
       } else {
-        this.idMusic = this.player.length - 1;
+        this.index_playing = this.musics.length - 1;
       }
       this.skipInverse = true;
       this.changeSong();
     },
     next() {
-      if (this.player[this.idMusic + 1]) {
-        this.idMusic += 1;
+      if (this.musics[this.index_playing + 1]) {
+        this.index_playing += 1;
       } else {
-        this.idMusic = 0;
+        this.index_playing = 0;
       }
       //On envoie le fichier mp3 de notre tableau à l'index souhaité
       this.skipInverse = false;
@@ -89,8 +165,8 @@ export default {
     changeSong() {
       //Reinitialisation des params des toutes les variables propres à this.music
       this.current_time = 0;
-      this.music.src = this.player[this.idMusic].mp3;
-      this.idCurrentMusic = this.player[this.idMusic].id;
+      this.music.src = this.musics[this.index_playing].mp3;
+      this.idCurrentMusic = this.musics[this.index_playing].id;
       this.music.volume = this.volume;
       this.checkLikedSong();
       this.playSong();
@@ -116,7 +192,7 @@ export default {
       //   this.music.title = music.title;
       //   this.music.image = music.image;
       //   this.music.author = music.author;
-      this.currentIndex = music.id;
+      this.index_playing = music.id;
       this.changeSong();
       this.playSong();
     },
@@ -205,23 +281,12 @@ export default {
     // this.getThisMusic(0);
   },
   computed: {
-    currentSong() {      
-        return this.player.find(el => el.id === this.idMusic);     
-    },   
+    currentSong() {
+      return this.musics[this.index_playing];
+    },
     image() {
       return this.currentSong.image;
-    },  
-  },
-  beforeUpdate(){
-    this.music.src = this.currentSong.mp3;
-    this.duration = this.music.duration || 0;
-    this.music.addEventListener("timeupdate", () => {
-      this.duration = Math.round(this.music.duration) || 0;
-      this.current_time = this.music.currentTime;
-    });
-    this.music.addEventListener("durationchange", () => {
-      this.music.currentTime = this.current_time;
-    });
+    }
   },
   mounted() {
     this.music.src = this.currentSong.mp3;
@@ -233,40 +298,55 @@ export default {
     this.music.addEventListener("durationchange", () => {
       this.music.currentTime = this.current_time;
     });
-    console.log(this.player);
-    console.log(this.idMusic);
-    
-    
-    this.$emit('music', this.player, this.idMusic);
-  },
-  watch: {
-    currentSong: function() {
-      this.music.src = this.currentSong.mp3;
-      this.duration = this.music.duration || 0;
-      this.music.addEventListener("timeupdate", () => {
-      this.duration = Math.round(this.music.duration) || 0;
-      this.current_time = this.music.currentTime;
-    });
-    this.music.addEventListener("durationchange", () => {
-      this.music.currentTime = this.current_time;
-    });
-    }
   }
 };
 </script>
 
 <style>
-.PlayerBottom {
+.musics-container {
+  height: 340px;
+  overflow: scroll;
+}
+
+.player-container {
+  background-color: black;
+  height: 100%;
+}
+
+.background {
   position: absolute;
-  right: 0;
-  bottom: 125px;
-  left: 0;
+  filter: blur(0.5rem);
+  height: 100%;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
 }
-.v-sheet.v-card {
-  border-radius: 0 !important;
+
+.player {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
 }
-.image {
-  width: 50px;
-  height: 50px;
+
+@media screen and (max-width: 500px) {
+  .player {
+    height: 100%;
+    margin-top: 0%;
+  }
+}
+
+.v-card__actions {
+  padding: 0;
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent; /* make scrollbar transparent */
+}
+
+.background {
+  transition: 0.3s ease-out;
 }
 </style>

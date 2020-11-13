@@ -25,8 +25,8 @@
 
         <div
           class="d-flex justify-start"
-          v-for="playlist in playlists"
-          :key="playlist.playlistId"
+          v-for="(playlist, idx) in musics"
+          :key="idx"
           @click="openPlaylist(playlist)"
         >
           <div class="mt-5 ml-2 image-small rounded-sm">
@@ -50,7 +50,7 @@
       leave-active-class="animated fadeOutRightBig"
       key="playlist"
     >
-      <div v-if="!displayingPlaylist">
+      <div v-if="!displayingPlaylist" class="playlistOpen">
         <div class="retour mt-10">
           <v-icon color="red">mdi-chevron-left</v-icon>
           <span @click="goBack" class="text-display">Playlists</span>
@@ -65,34 +65,28 @@
           <div class="d-flex justify-center">
             <v-btn class="play mr-2" elevation="0">
               <v-icon color="red">mdi-play</v-icon>
-              <p class="text-display my-auto ml-2">Play</p>
+              <p class="text-display my-auto ml-2" @click="playThisPlaylist(playlistId)">Play</p>
             </v-btn>
             <v-btn class="play ml-2" elevation="0">
               <v-icon color="red">mdi-shuffle</v-icon>
-              <p class="text-display my-auto ml-2">Shuffle</p>
+              <p class="text-display my-auto ml-2" @click="playThisPlaylistShuffle(playlistId)">Shuffle</p>
             </v-btn>
           </div>
           <hr class="mt-5 mb-5 mx-auto" width="400px" />
           <div width="400px">
-            <div v-for="music in displayPlaylist" :key="music">
-              <v-img class="mt-5 image-music">
-                <v-img
-                  class="image rounded-xl"
-                  :src="music.image"
-                  :key="music.id"
-                />
-              </v-img>
+            <div v-for="music in displayPlaylist" :key="music.id" @click="playThisMusic(music.id)">
+              <div class="mt-5 d-flex justify-start">
+              <v-img class="rounded" :src="music.image" max-width="50px" max-height="50px" />
               <div class="displayText">
-                <v-card-text class="text--primary mb-n5">
+                <v-card-text class="text--primary mt-n3 text-music">
                   <div>
                     <b>{{ music.title }}</b>
                   </div>
-                </v-card-text>
-
-                <v-card-subtitle>
                   <div>{{ music.author }}</div>
-                </v-card-subtitle>
+                </v-card-text>
               </div>
+            </div>
+            <hr />
             </div>
           </div>
         </div>
@@ -106,30 +100,44 @@ export default {
   name: "Playlist",
   components: {},
   props:{
-      playlists: {},
+      musics: {},
   },
   data: () => ({
     displayingPlaylist: true,
     diplayImg: '',
     displayName: '',
     displayPlaylist: [],
+    playlistId: '',
     image : '',    
   }),
   methods: {
     openPlaylist(playlist) {
-      let PL = playlist.playlist;
-
-      this.displayingPlaylist = [...PL];
+      this.displayPlaylist = [...playlist.playlist];
+      console.log(playlist.playlist);
+      console.log(this.displayingPlaylist);
+      
+      
       this.displayName = playlist.playlistName; 
       this.displayImg = playlist.playlistImg;
+      this.playlistId = playlist.playlistId;
       this.displayingPlaylist = false;
     },
     goBack() {
       this.displayingPlaylist = true;
       this.diplayPlaylist = '';
+      this.playlistId = '';
       this.displayName = '';
       this.displayImg = '';
-    }
+    },
+    playThisPlaylist(playlistId) {
+      this.$emit('playThisPlaylist', playlistId);
+    },
+    playThisPlaylistShuffle(playlistId) {
+      this.$emit('playThisPlaylistShuffle', playlistId);
+    },
+    playThisMusic(event) {
+      this.$emit('playThisMusic', event);
+    },
   },
   watch: {},
 };
@@ -148,4 +156,25 @@ export default {
 .text-display {
   color: red;
 }
+.playlistOpen{
+  position: fixed;
+  left: auto;
+  right: auto;
+  height:87.9%;
+  width: 90%;
+  overflow: scroll;
+}
+.displayText {
+  white-space: nowrap;
+  overflow: hidden;
+  width: auto;
+  margin: 0 20px 0 0;
+}
+
+hr {
+  width: auto;
+  margin: -10px 20px;
+  height: 1px;
+}
+
 </style>

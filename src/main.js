@@ -20,8 +20,8 @@ const routes = [
     component: () => import('./components/Playlist.vue')
   },
   {
-    path: '/player', name:'Player',
-    component: () => import('./components/Player.vue')
+    path: '/playerSong', name:'PlayerSong',
+    component: () => import('./components/PlayerSong.vue')
   },
   
 ];
