@@ -1,10 +1,12 @@
 import Vue from 'vue'
 import App from './App.vue'
 import vuetify from './plugins/vuetify'
-import './registerServiceWorker'
 import VueRouter from 'vue-router'
+import wb from "./registerServiceWorker";
 
-Vue.use(VueRouter)
+
+Vue.use(VueRouter);
+Vue.prototype.$workbox = wb;
 
 const routes = [
   // {

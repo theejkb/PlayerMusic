@@ -254,7 +254,14 @@ export default {
     allMusicSize() {
       return this.allSongs.length();
     }
+  },
+  created() {
+  if (this.$workbox) {
+    this.$workbox.addEventListener("waiting", () => {
+      this.showUpdateUI = true;
+    });
   }
+}
 };
 </script>
 

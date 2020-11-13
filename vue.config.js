@@ -3,13 +3,11 @@ module.exports = {
     "vuetify"
   ],
   pwa: {
-    name: 'PlayerApp',
-    themeColor: '#4DBA87',
-    msTileColor: '#000000',
-    appleMobileWebAppCapable: 'yes',
-    appleMobileWebAppStatusBarStyle: 'black',
-    // configure the workbox plugin
-    workboxPluginMode: 'InjectManifest',
-   
+    themeColor: "#42b983",
+    msTileColor: "#42b983",
+    appleMobileWebAppCache: "yes",
+    manifestOptions: {
+      background_color: "#42b983"
+    }
   }
 }

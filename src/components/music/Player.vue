@@ -4,8 +4,8 @@
       <v-list-item>
         <v-img class="ml-1 rounded image" :src="image" />
 
-        <v-card-text >
-          <b>{{currentSong.title}}</b>
+        <v-card-text>
+          <b>{{ currentSong.title }}</b>
         </v-card-text>
         <v-spacer></v-spacer>
         <v-list-item-icon>
@@ -39,6 +39,7 @@ export default {
     someValue: 30,
     music: new Audio(),
     idCurrentMusic: 0,
+    currentId: '',
     volume: 0.3,
     duration: 0,
     current_time: 0,
@@ -48,7 +49,7 @@ export default {
     showPlaylist_var: "",
     likedSong: [],
     colorSongLiked: "",
-    songLiked: false
+    songLiked: false,
   }),
   props: {
     player: Array,
@@ -101,14 +102,23 @@ export default {
     handleBtnPlaying() {
       this.isPlaying = !this.isPlaying;
       if (this.isPlaying) {
-        this.music.play();
+        this.playSong();
       } else {
         this.music.pause();
       }
     },
     playSong() {
-      this.isPlaying = true;
-      this.music.play();
+      var playPromise = this.music.play();
+
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            this.isPlaying = true;
+
+            this.music.play();
+          })
+          
+      }
     },
     playThisSong(music) {
       //   this.music.src = music.mp3;
@@ -196,7 +206,7 @@ export default {
       } else {
         this.colorSongLiked = "";
       }
-    }
+    },
   },
   created() {
     // fetch("https://jsonplaceholder.typicode.com/photos")
@@ -205,14 +215,14 @@ export default {
     // this.getThisMusic(0);
   },
   computed: {
-    currentSong() {      
-        return this.player.find(el => el.id === this.idMusic);     
-    },   
+    currentSong() {
+      return this.player.find((el) => el.id === this.idMusic);
+    },
     image() {
       return this.currentSong.image;
-    },  
+    },
   },
-  beforeUpdate(){
+  beforeUpdate() {
     this.music.src = this.currentSong.mp3;
     this.duration = this.music.duration || 0;
     this.music.addEventListener("timeupdate", () => {
@@ -235,29 +245,27 @@ export default {
     });
     console.log(this.player);
     console.log(this.idMusic);
-    
-    
-    this.$emit('music', this.player, this.idMusic);
+
+    this.$emit("music", this.player, this.idMusic);
   },
   watch: {
     currentSong: function() {
       this.music.src = this.currentSong.mp3;
       this.duration = this.music.duration || 0;
       this.music.addEventListener("timeupdate", () => {
-      this.duration = Math.round(this.music.duration) || 0;
-      this.current_time = this.music.currentTime;
-    });
-    this.music.addEventListener("durationchange", () => {
-      this.music.currentTime = this.current_time;
-    });
-    }
-  }
+        this.duration = Math.round(this.music.duration) || 0;
+        this.current_time = this.music.currentTime;
+      });
+      this.music.addEventListener("durationchange", () => {
+        this.music.currentTime = this.current_time;
+      });
+    },
+  },
 };
 </script>
 
 <style>
 .PlayerBottom {
-  position: absolute;
   right: 0;
   bottom: 125px;
   left: 0;
