@@ -157,7 +157,7 @@ export default {
     songLiked: false,
   }),
   props:{
-    musics: [],
+    musics: {},
   },
   methods: {
     showPlaylist() {

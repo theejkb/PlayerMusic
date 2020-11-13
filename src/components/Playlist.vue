@@ -117,8 +117,10 @@ export default {
   }),
   methods: {
     openPlaylist(playlist) {
-      this.diplayPlaylist = [...playlist.playlist];
-      this.displayName = playlist.playlistName;
+      let PL = playlist.playlist;
+
+      this.displayingPlaylist = [...PL];
+      this.displayName = playlist.playlistName; 
       this.displayImg = playlist.playlistImg;
       this.displayingPlaylist = false;
     },

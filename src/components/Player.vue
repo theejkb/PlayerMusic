@@ -1,6 +1,7 @@
 <template>
 <div>  
-    <Player :musics="playlists"></Player>
+    <h1>PLAYER</h1>
+    <Player :musics="playlists"/>
 </div>
 </template>
 
@@ -9,12 +10,12 @@ import Player from './music/Player';
 
 
 export default {
-    name: "Player",
+    name: "PlayerMain",
     components: {
       Player,
     },
     props:{
-        playlists: [],
+        playlists: {},
     },
     data: function () {
        return {

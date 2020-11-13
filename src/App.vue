@@ -17,7 +17,7 @@
         </router-link>
 
       
-        <router-link to="/search" class="nav ml-5">
+        <router-link to="/player" class="nav ml-5">
           <v-icon color="grey" color-active="red" class="mt-2">mdi-card-search-outline</v-icon>
           <p class="text-red">Player</p>
         </router-link>
