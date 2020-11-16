@@ -209,26 +209,30 @@ export default {
   }),
   methods: {
     playThisMusic(music) {
-      console.log('test');
+      console.log('playThisMusic');
       this.player = this.allSongs;
       this.$refs.Player.playThisMusic(music);   
       this.idMusic = music.id;   
     },
     playThisPlaylist(value) {
+      console.log('playThisPlaylist');
       this.player = this.musics.find(el => el.playlistId === value).playlist;
       this.idMusic = 0;
     },
     playThisPlaylistShuffle(value) {
+      console.log("playThisPlaylistShuffle");
       this.playerTemp = this.musics.find(el => el.playlistId === value).playlist;
       this.shuffle(this.playerTemp);
       this.player = [...this.playerTemp]
       this.idMusic = 0;
     },
     playAllSongs() {
+      console.log("playAllSongs");
       this.player = this.allSongs;
       this.idMusic = 0;
     },
     playAllSongsShuffle() {
+      console.log("playAllSongsShuffle");
       this.playerTemp = this.allSongs;
       this.shuffle(this.playerTemp);
       this.player = [...this.playerTemp]

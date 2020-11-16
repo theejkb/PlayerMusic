@@ -170,11 +170,9 @@ export default {
   width: auto;
   margin: 0 20px 0 0;
 }
-
 hr {
   width: auto;
   margin: -10px 20px;
   height: 1px;
 }
-
 </style>
