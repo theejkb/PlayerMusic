@@ -56,9 +56,7 @@ export default {
     idMusic: Number,
   },
   methods: {
-    playerImage() {
-      return "../../" + this.player.image;
-    },
+    // TODO: Clean-up methods
     showPlaylist() {
       this.showPlaylists = !this.showPlaylists;
       if (this.showPlaylists == true) {
@@ -86,6 +84,9 @@ export default {
       //On envoie le fichier mp3 de notre tableau à l'index souhaité
       this.skipInverse = false;
       this.changeSong();
+    },
+    shuffle() {
+      this.idMusic = Math.random(0, )
     },
     changeSong() {
       //Reinitialisation des params des toutes les variables propres à this.music
@@ -116,20 +117,28 @@ export default {
             this.isPlaying = true;
 
             this.music.play();
-          })
-          
+          })          
       }
     },
-    playThisSong(music) {
-      //   this.music.src = music.mp3;
-      this.idCurrentMusic = music.id;
-      //   this.music.title = music.title;
-      //   this.music.image = music.image;
-      //   this.music.author = music.author;
-      this.currentIndex = music.id;
+    playThisMusic(music) {
+      this.music.pause();
       this.changeSong();
+      console.log("Player -> playThisMusic");
+      this.idCurrentMusic = music.id;
+      this.currentIndex = music.id;   
+      this.music.src = music.mp3;   
       this.playSong();
     },
+    // TODO: Creér la méthode playMusicById
+    // playThisMusicById(musicId) {
+    //   this.music.pause();
+    //   this.changeSong();
+    //   console.log("Player -> playThisMusic");
+    //   this.idCurrentMusic = musicId;
+    //   this.currentIndex = music.id;   
+    //   this.music.src = music.mp3;   
+    //   this.playSong();
+    // },
     songVolume() {
       return (this.music.volume = this.volume);
     },

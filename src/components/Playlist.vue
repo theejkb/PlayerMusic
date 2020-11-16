@@ -74,7 +74,7 @@
           </div>
           <hr class="mt-5 mb-5 mx-auto" width="400px" />
           <div width="400px">
-            <div v-for="music in displayPlaylist" :key="music.id" @click="playThisMusic(music.id)">
+            <div v-for="music in displayPlaylist" :key="music.id" @click="playThisMusic(music)">
               <div class="mt-5 d-flex justify-start">
               <v-img class="rounded" :src="music.image" max-width="50px" max-height="50px" />
               <div class="displayText">

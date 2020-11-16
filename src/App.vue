@@ -11,6 +11,7 @@
           v-on:playThisPlaylist="playThisPlaylist"
           v-on:playThisPlaylistShuffle="playThisPlaylistShuffle"
           v-on:playAllSongs="playAllSongs"
+          v-on:playThisMusic="playThisMusic"
         ></router-view>
       </v-main>
       <Player v-if="idMusic >= 0" :player="player" :idMusic="idMusic" ref="Player" v-on:music="sendMusic"/>
@@ -47,6 +48,7 @@ export default {
   data: () => ({
     image: "",
     player: [],
+    showPlayer: false,
     playerTemp: [],
     idMusic: Number,
     musics: [
@@ -205,21 +207,24 @@ export default {
         liked: false
       }
     ],
-    showPlayer: false
   }),
   methods: {
     playThisMusic(music) {
       console.log('playThisMusic');
+      this.idMusic = music.id; 
       this.player = this.allSongs;
-      this.$refs.Player.playThisMusic(music);   
-      this.idMusic = music.id;   
+      console.log(music.title);
+      console.log(music.id);
+      this.$refs.Player.playThisMusic(music);           
     },
     playThisPlaylist(value) {
+      this.showPlayer = true;
       console.log('playThisPlaylist');
       this.player = this.musics.find(el => el.playlistId === value).playlist;
       this.idMusic = 0;
     },
     playThisPlaylistShuffle(value) {
+      this.showPlayer = true;
       console.log("playThisPlaylistShuffle");
       this.playerTemp = this.musics.find(el => el.playlistId === value).playlist;
       this.shuffle(this.playerTemp);
@@ -227,15 +232,17 @@ export default {
       this.idMusic = 0;
     },
     playAllSongs() {
+      this.showPlayer = true;
       console.log("playAllSongs");
       this.player = this.allSongs;
       this.idMusic = 0;
     },
     playAllSongsShuffle() {
+      this.showPlayer = true;
       console.log("playAllSongsShuffle");
-      this.playerTemp = this.allSongs;
-      this.shuffle(this.playerTemp);
-      this.player = [...this.playerTemp]
+      this.player = this.allSongs;
+      // this.shuffle(this.playerTemp);
+      // this.player = [...this.playerTemp]
       this.idMusic = this.entierAleatoire(0, 7);
     },
     playerImg() {
