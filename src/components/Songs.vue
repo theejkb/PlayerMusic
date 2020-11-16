@@ -14,7 +14,7 @@
               <p class="text-display my-auto ml-2" @click="playAllSongsShuffle">Shuffle</p>
             </v-btn>
           </div>
-          <div v-for="(music) in allSongs" :key="music.id" @click="playThisMusic(music.id)">
+          <div v-for="(music) in allSongs" :key="music.id" @click="playThisMusic(music)">
             <div class="mt-5 d-flex justify-start">
               <v-img class="rounded" :src="music.image" max-width="50px" max-height="50px" />
               <div class="displayText">
@@ -46,8 +46,8 @@ export default {
     };
   },
   methods: {
-    playThisMusic(event) {
-      this.$emit('playThisMusic', event);
+    playThisMusic(music) {
+      this.$emit('playThisMusic', music);
     },
     playAllSongs() {
       this.$emit('playAllSongs');

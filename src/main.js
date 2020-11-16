@@ -14,7 +14,7 @@ const routes = [
   //   component: () => import('./components/WelcomePage.vue')
   // },
   {
-    path: '/songs', name:'Songs',
+    path: '/', name:'Songs',
     component: () => import('./components/Songs.vue')
   },
   {

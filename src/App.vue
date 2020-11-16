@@ -8,15 +8,14 @@
           :player="player" 
           :idMusic="idMusic"
           v-on:playAllSongsShuffle="playAllSongsShuffle"
-          v-on:playThisMusic="playThisMusic"
           v-on:playThisPlaylist="playThisPlaylist"
           v-on:playThisPlaylistShuffle="playThisPlaylistShuffle"
           v-on:playAllSongs="playAllSongs"
         ></router-view>
       </v-main>
-      <Player v-if="idMusic >= 0" :player="player" :idMusic="idMusic" ref="player" v-on:music="sendMusic"></Player>
+      <Player v-if="idMusic >= 0" :player="player" :idMusic="idMusic" ref="Player" v-on:music="sendMusic"/>
       <v-bottom-navigation horizontal absolute>
-        <router-link to="/songs" class="nav mr-5">
+        <router-link to="/" class="nav mr-5">
           <v-icon color="grey" class="mt-2">mdi-music-box-multiple-outline</v-icon>
           <p class="text-red">Songs</p>
         </router-link>
@@ -209,9 +208,11 @@ export default {
     showPlayer: false
   }),
   methods: {
-    playThisMusic(value) {
+    playThisMusic(music) {
+      console.log('test');
       this.player = this.allSongs;
-      this.idMusic = value;
+      this.$refs.Player.playThisMusic(music);   
+      this.idMusic = music.id;   
     },
     playThisPlaylist(value) {
       this.player = this.musics.find(el => el.playlistId === value).playlist;
