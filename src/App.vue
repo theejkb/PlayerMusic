@@ -313,9 +313,7 @@ export default {
 .v-btn {
   text-decoration: none !important;
 }
-.router-link-active {
-  color: red;
-}
+
 .btn-nav {
   text-decoration: none !important;
 }
@@ -330,10 +328,10 @@ export default {
   text-decoration: none !important;
   font-size: 14px;
 }
-.router-link-active .text-red {
+.router-link-exact-active .text-red {
   color: red !important;
 }
-.router-link-active .v-icon.v-icon {
+.router-link-exact-active .v-icon.v-icon {
   color: red !important;
 }
 </style>
