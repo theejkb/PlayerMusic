@@ -1,32 +1,43 @@
 <template>
   <div class>
     <h1 class="d-flex justify-center mt-5 mb-5">Songs</h1>
-    <v-text-field color="red" label="Find in Songs"></v-text-field>    
-    <div class="test">      
+    <v-text-field color="red" label="Find in Songs"></v-text-field>
+    <div class="test">
       <div class="songs-container">
-         <div class="d-flex justify-center mb-5">
-            <v-btn class="play mr-2" elevation="0">
-              <v-icon color="red">mdi-play</v-icon>
-              <p class="text-display my-auto ml-2" @click="playAllSongs">Play</p>
-            </v-btn>
-            <v-btn class="play ml-2" elevation="0">
-              <v-icon color="red">mdi-shuffle</v-icon>
-              <p class="text-display my-auto ml-2" @click="playAllSongsShuffle">Shuffle</p>
-            </v-btn>
-          </div>
-          <div v-for="(music) in allSongs" :key="music.id" @click="playThisMusic(music)">
-            <div class="mt-5 d-flex justify-start">
-              <v-img class="rounded" :src="music.image" max-width="50px" max-height="50px" />
-              <div class="displayText">
-                <v-card-text class="text--primary mt-n3 text-music">
-                  <div>
-                    <b>{{ music.title }}</b>
-                  </div>
-                  <div>{{ music.author }}</div>
-                </v-card-text>
-              </div>
+        <div class="d-flex justify-center mb-5">
+          <v-btn class="play mr-2" elevation="0">
+            <v-icon color="red">mdi-play</v-icon>
+            <p class="text-display my-auto ml-2" @click="playAllSongs">Play</p>
+          </v-btn>
+          <v-btn class="play ml-2" elevation="0">
+            <v-icon color="red">mdi-shuffle</v-icon>
+            <p class="text-display my-auto ml-2" @click="playAllSongsShuffle">
+              Shuffle
+            </p>
+          </v-btn>
+        </div>
+        <div
+          v-for="music in allSongs"
+          :key="music.id"
+          @click="playThisMusic(music)"
+        >
+          <div class="mt-5 d-flex justify-start">
+            <v-img
+              class="rounded"
+              :src="music.image"
+              max-width="50px"
+              max-height="50px"
+            />
+            <div class="displayText">
+              <v-card-text class="text--primary mt-n3 text-music">
+                <div>
+                  <b>{{ music.title }}</b>
+                </div>
+                <div>{{ music.author }}</div>
+              </v-card-text>
             </div>
-            <hr />
+          </div>
+          <hr />
         </div>
       </div>
     </div>
@@ -37,26 +48,27 @@
 export default {
   name: "Songs",
   props: {
-    allSongs: {}
+    allSongs: {},
   },
   components: {},
-  data: function() {
+  data: function () {
     return {
-      music: ""
+      music: "",
     };
   },
   methods: {
     playThisMusic(music) {
-      this.$emit('playThisMusic', music);
+      this.$emit("playThisMusic", music);
+      console.log(music);
     },
     playAllSongs() {
-      this.$emit('playAllSongs');
+      this.$emit("playAllSongs");
     },
     playAllSongsShuffle() {
-      this.$emit('playAllSongsShuffle');
-    }
+      this.$emit("playAllSongsShuffle");
+    },
   },
-  watch: {}
+  watch: {},
 };
 </script>
 <style scoped>
@@ -66,7 +78,6 @@ export default {
   width: 100%;
   overflow: scroll;
   padding-bottom: 25px;
- 
 }
 .displayText {
   white-space: nowrap;
@@ -80,6 +91,4 @@ hr {
   margin: -10px 60px;
   height: 1px;
 }
-
-
 </style>

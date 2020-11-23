@@ -5,7 +5,7 @@
         <router-view
           :musics="musics"
           :allSongs="allSongs"
-          :player="player" 
+          :player="player"
           :idMusic="idMusic"
           v-on:playAllSongsShuffle="playAllSongsShuffle"
           v-on:playThisPlaylist="playThisPlaylist"
@@ -14,10 +14,19 @@
           v-on:playThisMusic="playThisMusic"
         ></router-view>
       </v-main>
-      <Player v-if="idMusic >= 0" :player="player" :idMusic="idMusic" ref="Player" v-on:music="sendMusic"/>
+      <Player
+        v-if="showPlayer == true"
+        :player="player"
+        :idMusic="idMusic"
+        :isShuffle="isShuffle"
+        ref="Player"
+        v-on:music="sendMusic"
+      />
       <v-bottom-navigation horizontal absolute>
         <router-link to="/" class="nav mr-5">
-          <v-icon color="grey" class="mt-2">mdi-music-box-multiple-outline</v-icon>
+          <v-icon color="grey" class="mt-2"
+            >mdi-music-box-multiple-outline</v-icon
+          >
           <p class="text-red">Songs</p>
         </router-link>
 
@@ -27,7 +36,9 @@
         </router-link>
 
         <router-link to="/playerSong" class="nav ml-5">
-          <v-icon color="grey" color-active="red" class="mt-2">mdi-card-search-outline</v-icon>
+          <v-icon color="grey" color-active="red" class="mt-2"
+            >mdi-card-search-outline</v-icon
+          >
           <p class="text-red">Player</p>
         </router-link>
       </v-bottom-navigation>
@@ -42,7 +53,7 @@ export default {
   name: "App",
 
   components: {
-    Player
+    Player,
   },
 
   data: () => ({
@@ -50,7 +61,8 @@ export default {
     player: [],
     showPlayer: false,
     playerTemp: [],
-    idMusic: Number,
+    idMusic: 0,
+    isShuffle: false,
     musics: [
       {
         playlistId: 0,
@@ -63,7 +75,7 @@ export default {
             image: require("./assets/musics/img/mummy.jpg"),
             mp3: require("./assets/musics/the-curse-of-the-sad-mummy-amumu-music-video-league-of-legends.mp3"),
             author: "Riot Games",
-            liked: false
+            liked: false,
           },
           {
             id: 1,
@@ -71,7 +83,7 @@ export default {
             image: require("./assets/musics/img/kda_popstars.jpg"),
             mp3: require("./assets/musics/kda-popstars-ft-madison-beer-gi-dle-jaira-burns-music-video-league-of-legends.mp3"),
             author: "K/DA (ft. Madison Beer, (G)I-DLE, Jaira Burns)",
-            liked: false
+            liked: false,
           },
           {
             id: 2,
@@ -79,7 +91,7 @@ export default {
             image: require("./assets/musics/img/zeddIgnite.jpg"),
             mp3: require("./assets/musics/ignite-ft-zedd-worlds-2016-league-of-legends.mp3"),
             author: "Riot Games (ft. Zedd)",
-            liked: false
+            liked: false,
           },
           {
             id: 3,
@@ -87,7 +99,7 @@ export default {
             image: require("./assets/musics/img/legendsNeverDie.jpg"),
             mp3: require("./assets/musics/legends-never-die-ft-against-the-current-worlds-2017-league-of-legends.mp3"),
             author: "Riot Games (ft. Against The Current)",
-            liked: false
+            liked: false,
           },
           {
             id: 4,
@@ -95,7 +107,7 @@ export default {
             image: require("./assets/musics/img/rise.jpg"),
             mp3: require("./assets/musics/rise-ft-the-glitch-mob-mako-and-the-word-alive-worlds-2018-league-of-legends (1).mp3"),
             author: "Riot Games (ft. The Glitch Mob, Mako, and The Word Alive)",
-            liked: false
+            liked: false,
           },
           {
             id: 5,
@@ -104,7 +116,7 @@ export default {
             mp3: require("./assets/musics/true-damage-giants-ft-becky-g-keke-palmer-soyeon-duckwrth-thutmose-league-of-legends.mp3"),
             author:
               "GIANTS (ft. Becky G, Keke Palmer, SOYEON de (G)I-DLE, DUCKWRTH, Thutmose)",
-            liked: false
+            liked: false,
           },
           {
             id: 6,
@@ -112,7 +124,7 @@ export default {
             image: require("./assets/musics/img/warrios.jpg"),
             mp3: require("./assets/musics/warriors-ft-imagine-dragons-worlds-2014-league-of-legends.mp3"),
             author: "Riot Games (ft. Imagine Dragons)",
-            liked: false
+            liked: false,
           },
           {
             id: 7,
@@ -120,9 +132,9 @@ export default {
             image: require("./assets/musics/img/getJinxed.jpg"),
             mp3: require("./assets/musics/get-jinxed-jinx-music-video-league-of-legends.mp3"),
             author: "Riot Games",
-            liked: false
-          }
-        ]
+            liked: false,
+          },
+        ],
       },
       {
         playlistId: 1,
@@ -135,10 +147,10 @@ export default {
             image: require("./assets/musics/img/mummy.jpg"),
             mp3: require("./assets/musics/the-curse-of-the-sad-mummy-amumu-music-video-league-of-legends.mp3"),
             author: "Riot Games",
-            liked: false
-          }
-        ]
-      }
+            liked: false,
+          },
+        ],
+      },
     ],
     allSongs: [
       {
@@ -147,7 +159,7 @@ export default {
         image: require("./assets/musics/img/mummy.jpg"),
         mp3: require("./assets/musics/the-curse-of-the-sad-mummy-amumu-music-video-league-of-legends.mp3"),
         author: "Riot Games",
-        liked: false
+        liked: false,
       },
       {
         id: 1,
@@ -155,7 +167,7 @@ export default {
         image: require("./assets/musics/img/kda_popstars.jpg"),
         mp3: require("./assets/musics/kda-popstars-ft-madison-beer-gi-dle-jaira-burns-music-video-league-of-legends.mp3"),
         author: "K/DA (ft. Madison Beer, (G)I-DLE, Jaira Burns)",
-        liked: false
+        liked: false,
       },
       {
         id: 2,
@@ -163,7 +175,7 @@ export default {
         image: require("./assets/musics/img/zeddIgnite.jpg"),
         mp3: require("./assets/musics/ignite-ft-zedd-worlds-2016-league-of-legends.mp3"),
         author: "Riot Games (ft. Zedd)",
-        liked: false
+        liked: false,
       },
       {
         id: 3,
@@ -171,7 +183,7 @@ export default {
         image: require("./assets/musics/img/legendsNeverDie.jpg"),
         mp3: require("./assets/musics/legends-never-die-ft-against-the-current-worlds-2017-league-of-legends.mp3"),
         author: "Riot Games (ft. Against The Current)",
-        liked: false
+        liked: false,
       },
       {
         id: 4,
@@ -179,7 +191,7 @@ export default {
         image: require("./assets/musics/img/rise.jpg"),
         mp3: require("./assets/musics/rise-ft-the-glitch-mob-mako-and-the-word-alive-worlds-2018-league-of-legends (1).mp3"),
         author: "Riot Games (ft. The Glitch Mob, Mako, and The Word Alive)",
-        liked: false
+        liked: false,
       },
       {
         id: 5,
@@ -188,7 +200,7 @@ export default {
         mp3: require("./assets/musics/true-damage-giants-ft-becky-g-keke-palmer-soyeon-duckwrth-thutmose-league-of-legends.mp3"),
         author:
           "GIANTS (ft. Becky G, Keke Palmer, SOYEON de (G)I-DLE, DUCKWRTH, Thutmose)",
-        liked: false
+        liked: false,
       },
       {
         id: 6,
@@ -196,7 +208,7 @@ export default {
         image: require("./assets/musics/img/warrios.jpg"),
         mp3: require("./assets/musics/warriors-ft-imagine-dragons-worlds-2014-league-of-legends.mp3"),
         author: "Riot Games (ft. Imagine Dragons)",
-        liked: false
+        liked: false,
       },
       {
         id: 7,
@@ -204,46 +216,49 @@ export default {
         image: require("./assets/musics/img/getJinxed.jpg"),
         mp3: require("./assets/musics/get-jinxed-jinx-music-video-league-of-legends.mp3"),
         author: "Riot Games",
-        liked: false
-      }
+        liked: false,
+      },
     ],
   }),
   methods: {
     playThisMusic(music) {
-      console.log('playThisMusic');
-      this.idMusic = music.id; 
+      this.showPlayer = true;
+      this.idMusic = music.id;
       this.player = this.allSongs;
-      console.log(music.title);
-      console.log(music.id);
-      this.$refs.Player.playThisMusic(music);           
+      this.$refs.Player.playThisMusic(music);
     },
     playThisPlaylist(value) {
       this.showPlayer = true;
-      console.log('playThisPlaylist');
-      this.player = this.musics.find(el => el.playlistId === value).playlist;
+      console.log("playThisPlaylist");
+      this.player = this.musics.find((el) => el.playlistId === value).playlist;
       this.idMusic = 0;
+      this.$refs.Player.playAllSongs();
     },
     playThisPlaylistShuffle(value) {
       this.showPlayer = true;
       console.log("playThisPlaylistShuffle");
-      this.playerTemp = this.musics.find(el => el.playlistId === value).playlist;
+      this.playerTemp = this.musics.find(
+        (el) => el.playlistId === value
+      ).playlist;
       this.shuffle(this.playerTemp);
-      this.player = [...this.playerTemp]
+      this.isShuffle = true;
+      this.player = [...this.playerTemp];
       this.idMusic = 0;
+      this.$refs.Player.playAllSongs();
     },
     playAllSongs() {
       this.showPlayer = true;
-      console.log("playAllSongs");
       this.player = this.allSongs;
       this.idMusic = 0;
+      this.isShuffle = false;
+      this.$refs.Player.playAllSongs();
     },
     playAllSongsShuffle() {
       this.showPlayer = true;
-      console.log("playAllSongsShuffle");
       this.player = this.allSongs;
-      // this.shuffle(this.playerTemp);
-      // this.player = [...this.playerTemp]
-      this.idMusic = this.entierAleatoire(0, 7);
+      this.idMusic = 0;
+      this.isShuffle = true;
+      this.$refs.Player.playAllSongs();
     },
     playerImg() {
       return "" + this.player.img;
@@ -260,20 +275,16 @@ export default {
     sendMusic(player, idMusic) {
       this.player = player;
       this.idMusic = idMusic;
-    }
+    },
   },
-  computed: {
-    allMusicSize() {
-      return this.allSongs.length();
-    }
-  },
+  computed: {},
   created() {
-  if (this.$workbox) {
-    this.$workbox.addEventListener("waiting", () => {
-      this.showUpdateUI = true;
-    });
-  }
-}
+    if (this.$workbox) {
+      this.$workbox.addEventListener("waiting", () => {
+        this.showUpdateUI = true;
+      });
+    }
+  },
 };
 </script>
 

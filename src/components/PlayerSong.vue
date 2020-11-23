@@ -41,7 +41,15 @@
       ></v-slider>
     </v-card-text>
     <div class="d-flex justify-space-around">
-      <v-btn @click="previous" class="ml-2 mt-3" fab icon height="40px" right width="40px">
+      <v-btn
+        @click="previous"
+        class="ml-2 mt-3"
+        fab
+        icon
+        height="40px"
+        right
+        width="40px"
+      >
         <v-icon>mdi-skip-previous</v-icon>
       </v-btn>
       <v-card-actions>
@@ -58,7 +66,15 @@
           <v-icon v-else>mdi-pause</v-icon>
         </v-btn>
       </v-card-actions>
-      <v-btn @click="next" class="ml-2 mt-3" fab icon height="40px" right width="40px">
+      <v-btn
+        @click="next"
+        class="ml-2 mt-3"
+        fab
+        icon
+        height="40px"
+        right
+        width="40px"
+      >
         <v-icon>mdi-skip-next</v-icon>
       </v-btn>
     </div>
@@ -93,7 +109,12 @@
         v-model="volume"
       ></knob-control>
       <v-icon class="mx-5" @click="showPlaylist">mdi-library</v-icon>
-      <v-icon class="mx-5" @click="handleBtnLike(currentSong)" :color="colorSongLiked">mdi-heart</v-icon>
+      <v-icon
+        class="mx-5"
+        @click="handleBtnLike(currentSong)"
+        :color="colorSongLiked"
+        >mdi-heart</v-icon
+      >
       <v-icon class="mx-5">mdi-shuffle</v-icon>
     </div>
   </div>
@@ -107,7 +128,7 @@ export default {
   name: "PlayerSong",
   components: {
     Music,
-    KnobControl
+    KnobControl,
   },
   data: () => ({
     rating: 0,
@@ -127,10 +148,10 @@ export default {
     showPlaylist_var: "",
     likedSong: [],
     colorSongLiked: "",
-    songLiked: false
+    songLiked: false,
   }),
   props: {
-    player: {},
+    player: Array,
     idMusic: Number,
   },
   methods: {
@@ -144,19 +165,19 @@ export default {
       }
     },
     previous() {
-      if (this.musics[this.index_playing - 1]) {
-        this.index_playing -= 1;
+      if (this.musics[this.idMusic - 1]) {
+        this.idMusic -= 1;
       } else {
-        this.index_playing = this.musics.length - 1;
+        this.idMusic = this.idMusic - 1;
       }
       this.skipInverse = true;
       this.changeSong();
     },
     next() {
-      if (this.musics[this.index_playing + 1]) {
-        this.index_playing += 1;
+      if (this.musics[this.idMusic + 1]) {
+        this.idMusic += 1;
       } else {
-        this.index_playing = 0;
+        this.idMusic = 0;
       }
       //On envoie le fichier mp3 de notre tableau à l'index souhaité
       this.skipInverse = false;
@@ -165,8 +186,8 @@ export default {
     changeSong() {
       //Reinitialisation des params des toutes les variables propres à this.music
       this.current_time = 0;
-      this.music.src = this.musics[this.index_playing].mp3;
-      this.idCurrentMusic = this.musics[this.index_playing].id;
+      this.music.src = this.musics[this.idMusic].mp3;
+      this.idCurrentMusic = this.musics[this.idMusic].id;
       this.music.volume = this.volume;
       this.checkLikedSong();
       this.playSong();
@@ -272,7 +293,7 @@ export default {
       } else {
         this.colorSongLiked = "";
       }
-    }
+    },
   },
   created() {
     // fetch("https://jsonplaceholder.typicode.com/photos")
@@ -282,11 +303,11 @@ export default {
   },
   computed: {
     currentSong() {
-      return this.musics[this.index_playing];
+      return this.player.find((el) => el.id === this.idMusic);
     },
     image() {
       return this.currentSong.image;
-    }
+    },
   },
   mounted() {
     this.music.src = this.currentSong.mp3;
@@ -298,7 +319,7 @@ export default {
     this.music.addEventListener("durationchange", () => {
       this.music.currentTime = this.current_time;
     });
-  }
+  },
 };
 </script>
 
