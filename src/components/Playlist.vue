@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <div class="playlistParent">
     <transition
       name="custom-classes-transition"
       enter-active-class="animated fadeInLeftBig"
       leave-active-class="animated fadeOutLeftBig"
       key="playlist"
     >
-      <div v-if="displayingPlaylist">
+      <div v-if="displayingPlaylist" class="playlists">
         <h1 class="d-flex justify-center mt-5 mb-5">Playlists</h1>
         <v-text-field label="Find in Playlists"></v-text-field>
         <div class="d-flex justify-start">
@@ -181,12 +181,23 @@ export default {
   color: red;
 }
 .playlistOpen {
-  position: fixed;
+  position: absolute;
   left: auto;
   right: auto;
   height: 87.9%;
   width: 90%;
   overflow: scroll;
+}
+.playlists {
+  position: absolute;
+  width: 100%;
+  left: auto;
+  right: auto;
+}
+.playlistParent {
+  width: 100%;
+  height: 100%;
+  --animate-duration: 0.5s;
 }
 .displayText {
   white-space: nowrap;

@@ -20,7 +20,11 @@
       <div v-else>
         <v-img class="mt-5 image-music">
           <transition :name="skipInverse ? 'fade' : 'fade-inverse'">
-            <v-img class="image rounded-xl" :src="music.image" :key="music.id" />
+            <v-img
+              class="image rounded-xl"
+              :src="music.image"
+              :key="music.id"
+            />
           </transition>
         </v-img>
         <div :class="displayText">
@@ -45,10 +49,10 @@ export default {
   props: {
     music: {},
     skipInverse: Boolean,
-    affichage: String
+    affichage: String,
   },
   data: () => ({
-    displayText: ""
+    displayText: "",
   }),
   methods: {
     checkReduceImage() {
@@ -59,8 +63,8 @@ export default {
         this.displayText = "displayTextNone";
         return "reduceImage";
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -80,8 +84,6 @@ export default {
   min-height: 270px;
   transition: 0.3s ease;
 }
-
-
 
 @media screen and (max-width: 400px) {
   .image-music {

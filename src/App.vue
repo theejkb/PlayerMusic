@@ -5,23 +5,31 @@
         <router-view
           :musics="musics"
           :allSongs="allSongs"
-          :player="player"
           :idMusic="idMusic"
-          v-on:playAllSongsShuffle="playAllSongsShuffle"
-          v-on:playThisPlaylist="playThisPlaylist"
-          v-on:playThisPlaylistShuffle="playThisPlaylistShuffle"
-          v-on:playAllSongs="playAllSongs"
-          v-on:playThisMusic="playThisMusic"
+          @playAllSongsShuffle="playAllSongsShuffle"
+          @playThisPlaylist="playThisPlaylist"
+          @playThisPlaylistShuffle="playThisPlaylistShuffle"
+          @playAllSongs="playAllSongs"
+          @playThisMusic="playThisMusic"
         ></router-view>
       </v-main>
       <Player
-        v-if="(showPlayer = true)"
-        :player="player"
-        :idMusic="idMusic"
-        :isShuffle="isShuffle"
-        ref="Player"
-        v-on:music="sendMusic"
-        @getIdMusic="getIdMusic"
+        v-if="showPlayer == true"
+        :currentSong="currentSong"
+        :isPlaying="isPlaying"
+        @nextSong="nextSong"
+        @playing="playing"
+        @paused="paused"
+        @showPlayerBig="showPlayerBig"
+      />
+      <PlayerBig
+        v-if="showPlayerBig == true"
+        :currentSong="currentSong"
+        :isPlaying="isPlaying"
+        @nextSong="nextSong"
+        @playing="playing"
+        @paused="paused"
+        @playerBig="playerBig"
       />
       <v-bottom-navigation horizontal absolute>
         <router-link to="/" class="nav mr-5">
@@ -37,14 +45,10 @@
         </router-link>
 
         <router-link to="/playerSong" class="nav ml-5">
-          <v-icon
-            color="grey"
-            color-active="red"
-            class="mt-2"
-            @click="unshowPlayer"
+          <v-icon color="grey" color-active="red" class="mt-2"
             >mdi-card-search-outline</v-icon
           >
-          <p class="text-red" @click="unshowPlayer">Player</p>
+          <p class="text-red">Player</p>
         </router-link>
       </v-bottom-navigation>
     </v-card>
@@ -67,7 +71,10 @@ export default {
     showPlayer: false,
     playerTemp: [],
     idMusic: 0,
+    idMusicTmp: "",
     isShuffle: false,
+    isPlaying: false,
+    isPlayerBigVisible: false,
     musics: [
       {
         playlistId: 0,
@@ -224,77 +231,141 @@ export default {
         liked: false,
       },
     ],
+    music: new Audio(),
   }),
   methods: {
+    showPlayerBig() {
+      this.isPlayerBigVisible = true;
+    },
     unshowPlayer() {
       this.showPlayer = false;
+    },
+    showPlayerr() {
+      this.showPlayer = true;
+      this.idMusic = this.music.id;
     },
     getIdMusic(music) {
       this.idMusic = music.id;
     },
+    playing() {
+      this.music.play();
+    },
+    paused() {
+      this.music.pause();
+    },
+    changeSong() {
+      //Reinitialisation des params des toutes les variables propres à this.music
+      this.music.pause();
+      this.current_time = 0;
+      console.log(this.currentSong.mp3);
+      this.music.src = this.currentSong.mp3;
+      // this.checkLikedSong();
+      this.playSong();
+    },
+    nextSong() {
+      if (this.isShuffle == true) {
+        this.shuffleId();
+      } else {
+        if (this.allSongs[this.idMusic + 1]) {
+          this.idMusic += 1;
+        } else {
+          this.idMusic = 0;
+        }
+      }
+      //On envoie le fichier mp3 de notre tableau à l'index souhaité
+      this.skipInverse = false;
+      this.changeSong();
+    },
+    shuffleId() {
+      this.idMusicTmp = this.idMusic;
+      this.idMusic = this.entierAleatoire(0, this.player.length - 1);
+      while (this.idMusic == this.idMusicTmp) {
+        this.idMusic = this.entierAleatoire(0, this.player.length - 1);
+      }
+    },
     playThisMusic(music) {
       this.showPlayer = true;
+      console.log("App -> playThisMusic");
       this.idMusic = music.id;
-      this.player = this.allSongs;
-      this.$refs.Player.playThisMusic(music);
+      this.music.src = this.currentSong.mp3;
+      this.playSong();
     },
-    playThisPlaylist(value) {
-      this.showPlayer = true;
-      console.log("playThisPlaylist");
-      this.player = this.musics.find((el) => el.playlistId === value).playlist;
-      this.idMusic = 0;
-      this.$refs.Player.playAllSongs();
+    playSong() {
+      var playPromise = this.music.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          this.isPlaying = true;
+          this.music.play();
+        });
+      }
     },
-    playThisPlaylistShuffle(value) {
-      this.showPlayer = true;
-      console.log("playThisPlaylistShuffle");
-      this.playerTemp = this.musics.find(
-        (el) => el.playlistId === value
-      ).playlist;
-      this.shuffle(this.playerTemp);
-      this.isShuffle = true;
-      this.player = [...this.playerTemp];
-      this.idMusic = 0;
-      this.$refs.Player.playAllSongs();
+    handleBtnPlaying() {
+      this.isPlaying = !this.isPlaying;
+      if (this.isPlaying) {
+        this.playSong();
+      } else {
+        this.music.pause();
+      }
     },
     playAllSongs() {
       this.showPlayer = true;
       this.player = this.allSongs;
       this.idMusic = 0;
       this.isShuffle = false;
-      this.$refs.Player.playAllSongs();
+      this.playThisMusic(this.currentSong);
     },
     playAllSongsShuffle() {
       this.showPlayer = true;
       this.player = this.allSongs;
       this.idMusic = this.entierAleatoire(0, this.player.length - 1);
       this.isShuffle = true;
-      this.$refs.Player.playAllSongs();
+      this.playThisMusic(this.currentSong);
     },
+
+    playThisPlaylist(value) {
+      this.showPlayer = true;
+      console.log("playThisPlaylist");
+      this.player = this.musics.find((el) => el.playlistId === value).playlist;
+      this.idMusic = 0;
+      this.playThisMusic(this.currentSong);
+    },
+    playThisPlaylistShuffle(value) {
+      this.showPlayer = true;
+      console.log("playThisPlaylistShuffle");
+      this.player = this.musics.find((el) => el.playlistId === value).playlist;
+      this.isShuffle = true;
+      this.shuffleId();
+      this.playThisMusic(this.currentSong);
+    },
+
     playerImg() {
       return "" + this.player.img;
-    },
-    showPlayerBig() {
-      this.showPlayer = true;
-    },
-    shuffle(array) {
-      array.sort(() => Math.random() - 0.5);
     },
     entierAleatoire(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     },
-    sendMusic(player, idMusic) {
-      this.player = player;
-      this.idMusic = idMusic;
+  },
+  computed: {
+    currentSong() {
+      return this.allSongs.find((el) => el.id === this.idMusic);
     },
   },
-  computed: {},
   created() {
     if (this.$workbox) {
       this.$workbox.addEventListener("waiting", () => {
         this.showUpdateUI = true;
       });
     }
+  },
+  mounted() {
+    this.music.addEventListener("play", () => {
+      this.isPlaying = true;
+      this.showPlayer = true;
+    });
+    this.music.addEventListener("pause", () => {
+      this.isPlaying = false;
+      this.showPlayer = true;
+    });
   },
 };
 </script>
