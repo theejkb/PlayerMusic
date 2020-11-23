@@ -35,12 +35,13 @@
           <div>
             <v-container fill-height>
               <v-layout class="text--primary text-center ml-2 mt-10">
-                <b>{{playlist.playlistName}}</b>                
+                <b>{{ playlist.playlistName }}</b>
               </v-layout>
-              
             </v-container>
           </div>
-          <v-icon fill-width class="mt-2 ml-auto mr-5">mdi-chevron-right</v-icon>
+          <v-icon fill-width class="mt-2 ml-auto mr-5"
+            >mdi-chevron-right</v-icon
+          >
         </div>
       </div>
     </transition>
@@ -48,7 +49,7 @@
       name="custom-classes-transition"
       enter-active-class="animated fadeInRightBig"
       leave-active-class="animated fadeOutRightBig"
-      key="playlist"
+      key="playlistopen"
     >
       <div v-if="!displayingPlaylist" class="playlistOpen">
         <div class="retour mt-10">
@@ -56,37 +57,61 @@
           <span @click="goBack" class="text-display">Playlists</span>
         </div>
         <div>
-          <v-card :elevation="10" height="250" width="250" class="transparent mx-auto mt-10">
+          <v-card
+            :elevation="10"
+            height="250"
+            width="250"
+            class="transparent mx-auto mt-10"
+          >
             <v-img :src="displayImg"></v-img>
           </v-card>
           <v-card-text class="text--primary mt-2 text-center title">
-            <b>{{displayName}}</b>
+            <b>{{ displayName }}</b>
           </v-card-text>
           <div class="d-flex justify-center">
             <v-btn class="play mr-2" elevation="0">
               <v-icon color="red">mdi-play</v-icon>
-              <p class="text-display my-auto ml-2" @click="playThisPlaylist(playlistId)">Play</p>
+              <p
+                class="text-display my-auto ml-2"
+                @click="playThisPlaylist(playlistId)"
+              >
+                Play
+              </p>
             </v-btn>
             <v-btn class="play ml-2" elevation="0">
               <v-icon color="red">mdi-shuffle</v-icon>
-              <p class="text-display my-auto ml-2" @click="playThisPlaylistShuffle(playlistId)">Shuffle</p>
+              <p
+                class="text-display my-auto ml-2"
+                @click="playThisPlaylistShuffle(playlistId)"
+              >
+                Shuffle
+              </p>
             </v-btn>
           </div>
           <hr class="mt-5 mb-5 mx-auto" width="400px" />
           <div width="400px">
-            <div v-for="music in displayPlaylist" :key="music.id" @click="playThisMusic(music)">
+            <div
+              v-for="music in displayPlaylist"
+              :key="music.id"
+              @click="playThisMusic(music)"
+            >
               <div class="mt-5 d-flex justify-start">
-              <v-img class="rounded" :src="music.image" max-width="50px" max-height="50px" />
-              <div class="displayText">
-                <v-card-text class="text--primary mt-n3 text-music">
-                  <div>
-                    <b>{{ music.title }}</b>
-                  </div>
-                  <div>{{ music.author }}</div>
-                </v-card-text>
+                <v-img
+                  class="rounded"
+                  :src="music.image"
+                  max-width="50px"
+                  max-height="50px"
+                />
+                <div class="displayText">
+                  <v-card-text class="text--primary mt-n3 text-music">
+                    <div>
+                      <b>{{ music.title }}</b>
+                    </div>
+                    <div>{{ music.author }}</div>
+                  </v-card-text>
+                </div>
               </div>
-            </div>
-            <hr />
+              <hr />
             </div>
           </div>
         </div>
@@ -99,44 +124,43 @@
 export default {
   name: "Playlist",
   components: {},
-  props:{
-      musics: {},
+  props: {
+    musics: {},
   },
   data: () => ({
     displayingPlaylist: true,
-    diplayImg: '',
-    displayName: '',
+    diplayImg: "",
+    displayName: "",
     displayPlaylist: [],
-    playlistId: '',
-    image : '',    
+    playlistId: "",
+    image: "",
   }),
   methods: {
     openPlaylist(playlist) {
       this.displayPlaylist = [...playlist.playlist];
       console.log(playlist.playlist);
       console.log(this.displayingPlaylist);
-      
-      
-      this.displayName = playlist.playlistName; 
+
+      this.displayName = playlist.playlistName;
       this.displayImg = playlist.playlistImg;
       this.playlistId = playlist.playlistId;
       this.displayingPlaylist = false;
     },
     goBack() {
       this.displayingPlaylist = true;
-      this.diplayPlaylist = '';
-      this.playlistId = '';
-      this.displayName = '';
-      this.displayImg = '';
+      this.diplayPlaylist = "";
+      this.playlistId = "";
+      this.displayName = "";
+      this.displayImg = "";
     },
     playThisPlaylist(playlistId) {
-      this.$emit('playThisPlaylist', playlistId);
+      this.$emit("playThisPlaylist", playlistId);
     },
     playThisPlaylistShuffle(playlistId) {
-      this.$emit('playThisPlaylistShuffle', playlistId);
+      this.$emit("playThisPlaylistShuffle", playlistId);
     },
     playThisMusic(event) {
-      this.$emit('playThisMusic', event);
+      this.$emit("playThisMusic", event);
     },
   },
   watch: {},
@@ -156,11 +180,11 @@ export default {
 .text-display {
   color: red;
 }
-.playlistOpen{
+.playlistOpen {
   position: fixed;
   left: auto;
   right: auto;
-  height:87.9%;
+  height: 87.9%;
   width: 90%;
   overflow: scroll;
 }

@@ -1,7 +1,11 @@
 <template>
   <div class>
     <h1 class="d-flex justify-center mt-5 mb-5">Songs</h1>
-    <v-text-field color="red" label="Find in Songs"></v-text-field>
+    <v-text-field
+      color="red"
+      v-model="musicSearch"
+      label="Find in Songs"
+    ></v-text-field>
     <div class="test">
       <div class="songs-container">
         <div class="d-flex justify-center mb-5">
@@ -17,7 +21,7 @@
           </v-btn>
         </div>
         <div
-          v-for="music in allSongs"
+          v-for="music in searchMusic"
           :key="music.id"
           @click="playThisMusic(music)"
         >
@@ -54,6 +58,7 @@ export default {
   data: function () {
     return {
       music: "",
+      musicSearch: "",
     };
   },
   methods: {
@@ -66,6 +71,18 @@ export default {
     },
     playAllSongsShuffle() {
       this.$emit("playAllSongsShuffle");
+    },
+  },
+  computed: {
+    searchMusic() {
+      const musics = this.allSongs.filter((e) => {
+        const regex = /[^A-Za-z0-9]/g;
+        const search_input = this.musicSearch.toLowerCase().replace(regex, "");
+        const title = e.title.toLowerCase().replace(regex, "");
+        const author = e.author.toLowerCase().replace(regex, "");
+        return title.includes(search_input) || author.includes(search_input);
+      });
+      return musics;
     },
   },
   watch: {},
