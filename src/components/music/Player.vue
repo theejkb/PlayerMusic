@@ -3,12 +3,12 @@
     <v-list>
       <v-list-item>
         <v-img
-          @click="showPlayer == true"
+          @click="resizePlayer"
           class="ml-1 rounded image"
           :src="currentSong.image"
         />
 
-        <v-card-text @click="showPlayer == true">
+        <v-card-text @click="resizePlayer">
           <b>{{ currentSong.title }}</b>
         </v-card-text>
         <v-spacer></v-spacer>
@@ -43,9 +43,9 @@ export default {
   data: () => ({
     someValue: 30,
     music: new Audio(),
-    idCurrentMusic: 0,
-    idCurrentMusicTmp: 0,
-    volume: 0.3,
+    idCurrentMusic: "",
+    idCurrentMusicTmp: "",
+    volume: 0.5,
     duration: 0,
     current_time: 0,
     isPlaying: true,
@@ -73,6 +73,10 @@ export default {
     //     this.showPlaylist_var = "big";
     //   }
     // },
+    resizePlayer() {
+      this.showPlayer = true;
+      console.log("test");
+    },
     previous() {
       if (this.isShuffle == true) {
         this.shuffle();
@@ -114,10 +118,13 @@ export default {
       //Reinitialisation des params des toutes les variables propres à this.music
       this.music.pause();
       this.current_time = 0;
+      this.idCurrentMusic = this.idMusic;
+
+      console.log(this.currentSong.mp3);
       this.music.src = this.currentSong.mp3;
-      this.idMusic = this.idCurrentMusic;
-      this.$emit("getMusic", this.currentSong);
-      this.checkLikedSong();
+      // this.playThisMusic(this.music);
+      // this.$emit("getMusic", this.currentSong);
+      // this.checkLikedSong();
       this.playSong();
     },
     playAllSongs() {
@@ -154,7 +161,7 @@ export default {
       this.idCurrentMusic = music.id;
       this.currentIndex = music.id;
       this.music.src = music.mp3;
-      this.checkLikedSong();
+      // this.checkLikedSong();
       this.playSong();
     },
     // songVolume() {
@@ -249,7 +256,7 @@ export default {
   },
   computed: {
     currentSong() {
-      return this.player.find((el) => el.id === this.idCurrentMusic);
+      return this.player.find((el) => el.id === this.idMusic);
     },
   },
   mounted() {

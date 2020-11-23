@@ -15,7 +15,7 @@
         ></router-view>
       </v-main>
       <Player
-        v-if="showPlayer == true"
+        v-if="(showPlayer = true)"
         :player="player"
         :idMusic="idMusic"
         :isShuffle="isShuffle"
@@ -267,7 +267,7 @@ export default {
     playAllSongsShuffle() {
       this.showPlayer = true;
       this.player = this.allSongs;
-      this.idMusic = 0;
+      this.idMusic = this.entierAleatoire(0, this.player.length - 1);
       this.isShuffle = true;
       this.$refs.Player.playAllSongs();
     },
