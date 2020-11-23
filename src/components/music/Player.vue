@@ -44,7 +44,7 @@ export default {
     someValue: 30,
     music: new Audio(),
     idCurrentMusic: 0,
-    currentId: "",
+    idCurrentMusicTmp: 0,
     volume: 0.3,
     duration: 0,
     current_time: 0,
@@ -74,26 +74,38 @@ export default {
     //   }
     // },
     previous() {
-      if (this.player[this.idCurrentMusic - 1]) {
-        this.idCurrentMusic -= 1;
+      if (this.isShuffle == true) {
+        this.shuffle();
       } else {
-        this.idCurrentMusic = this.player.length - 1;
+        if (this.player[this.idCurrentMusic - 1]) {
+          this.idCurrentMusic -= 1;
+        } else {
+          this.idCurrentMusic = this.player.length - 1;
+        }
       }
       this.skipInverse = true;
       this.changeSong();
     },
     next() {
-      if (this.player[this.idCurrentMusic + 1]) {
-        this.idCurrentMusic += 1;
+      if (this.isShuffle == true) {
+        this.shuffle();
       } else {
-        this.idCurrentMusic = 0;
+        if (this.player[this.idCurrentMusic + 1]) {
+          this.idCurrentMusic += 1;
+        } else {
+          this.idCurrentMusic = 0;
+        }
       }
       //On envoie le fichier mp3 de notre tableau à l'index souhaité
       this.skipInverse = false;
       this.changeSong();
     },
     shuffle() {
+      this.idCurrentMusicTmp = this.idCurrentMusic;
       this.idCurrentMusic = this.entierAleatoire(0, this.player.length - 1);
+      while (this.idCurrentMusic == this.idCurrentMusicTmp) {
+        this.idCurrentMusic = this.entierAleatoire(0, this.player.length - 1);
+      }
     },
     entierAleatoire(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -103,13 +115,15 @@ export default {
       this.music.pause();
       this.current_time = 0;
       this.music.src = this.currentSong.mp3;
+      this.idMusic = this.idCurrentMusic;
+      this.$emit("getMusic", this.currentSong);
       this.checkLikedSong();
       this.playSong();
     },
     playAllSongs() {
       this.music.pause();
       if (this.isShuffle == true) {
-        this.idCurrentMusic = this.entierAleatoire(0, this.player.length - 1);
+        this.shuffle();
       }
       this.current_time = this.idCurrentMusic;
       this.idMusic = 0;

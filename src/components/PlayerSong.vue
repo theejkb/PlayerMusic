@@ -15,7 +15,7 @@
       </div>
       <div class="musics-container">
         <!-- Boucle sur notre tableau de musique -->
-        <div v-for="(music, idx) in musics" :key="idx">
+        <div v-for="(music, idx) in player" :key="idx">
           <!-- On n'affiche pas la musique courante -->
           <div @click="playThisSong(music)" v-if="music.id != idCurrentMusic">
             <Music :music="music" :affichage="showPlaylist_var"></Music>

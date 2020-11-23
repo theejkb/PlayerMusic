@@ -21,6 +21,7 @@
         :isShuffle="isShuffle"
         ref="Player"
         v-on:music="sendMusic"
+        @getIdMusic="getIdMusic"
       />
       <v-bottom-navigation horizontal absolute>
         <router-link to="/" class="nav mr-5">
@@ -36,10 +37,14 @@
         </router-link>
 
         <router-link to="/playerSong" class="nav ml-5">
-          <v-icon color="grey" color-active="red" class="mt-2"
+          <v-icon
+            color="grey"
+            color-active="red"
+            class="mt-2"
+            @click="unshowPlayer"
             >mdi-card-search-outline</v-icon
           >
-          <p class="text-red">Player</p>
+          <p class="text-red" @click="unshowPlayer">Player</p>
         </router-link>
       </v-bottom-navigation>
     </v-card>
@@ -221,6 +226,12 @@ export default {
     ],
   }),
   methods: {
+    unshowPlayer() {
+      this.showPlayer = false;
+    },
+    getIdMusic(music) {
+      this.idMusic = music.id;
+    },
     playThisMusic(music) {
       this.showPlayer = true;
       this.idMusic = music.id;
