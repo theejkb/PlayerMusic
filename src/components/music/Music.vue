@@ -21,7 +21,7 @@
         <v-img class="mt-5 image-music">
           <transition :name="skipInverse ? 'fade' : 'fade-inverse'">
             <v-img
-              class="image rounded-xl"
+              class="image mr-auto ml-auto rounded-xl"
               :src="music.image"
               :key="music.id"
             />
@@ -34,7 +34,7 @@
             </div>
           </v-card-text>
 
-          <v-card-subtitle>
+          <v-card-subtitle class="subtitle">
             <div>{{ this.music.author }}</div>
           </v-card-subtitle>
         </div>
@@ -47,7 +47,7 @@
 export default {
   name: "Music",
   props: {
-    music: {},
+    music: Object,
     skipInverse: Boolean,
     affichage: String,
   },
@@ -69,8 +69,13 @@ export default {
 </script>
 
 <style scoped>
+.title {
+  color: white;
+}
 .image {
   position: absolute;
+  width: 100%;
+  height: 100%;
 }
 
 .image-small {
@@ -81,13 +86,23 @@ export default {
 }
 
 .image-music {
-  min-height: 270px;
-  transition: 0.3s ease;
+  width: 50%;
+  height: 50%;
+  min-height: 300px;
+  min-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 500px) {
+  .image {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
   .image-music {
     min-height: 220px;
+    min-width: 220px;
     transition: 0.3s ease;
   }
 }

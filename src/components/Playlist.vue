@@ -53,7 +53,7 @@
     >
       <div v-if="!displayingPlaylist" class="playlistOpen">
         <div class="retour mt-10">
-          <v-icon color="red">mdi-chevron-left</v-icon>
+          <v-icon @click="goBack" color="red">mdi-chevron-left</v-icon>
           <span @click="goBack" class="text-display">Playlists</span>
         </div>
         <div>
@@ -93,7 +93,7 @@
             <div
               v-for="music in displayPlaylist"
               :key="music.id"
-              @click="playThisMusic(music)"
+              @click="playThisMusicPlaylist(music, playlistId)"
             >
               <div class="mt-5 d-flex justify-start">
                 <v-img
@@ -159,8 +159,10 @@ export default {
     playThisPlaylistShuffle(playlistId) {
       this.$emit("playThisPlaylistShuffle", playlistId);
     },
-    playThisMusic(event) {
-      this.$emit("playThisMusic", event);
+    playThisMusicPlaylist(music, playlistId) {
+      console.log(music);
+      console.log(playlistId);
+      this.$emit("playThisMusicPlaylist", music, playlistId);
     },
   },
   watch: {},

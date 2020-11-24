@@ -48,8 +48,6 @@ export default {
     // idCurrentMusic: "",
     // idCurrentMusicTmp: "",
     // volume: 0.5,
-    // duration: 0,
-    // current_time: 0,
     // isPlaying: true,
     // skipInverse: false,
     // showPlaylists: false,
@@ -263,20 +261,20 @@ export default {
     //   return this.player.find((el) => el.id === this.idMusic);
     // },
   },
-  // mounted() {
-  //   this.music.src = this.musicSource;
-  //   this.duration = this.music.duration || 0;
-  //   this.music.addEventListener("timeupdate", () => {
-  //     this.duration = Math.round(this.music.duration) || 0;
-  //     this.current_time = this.music.currentTime;
-  //   });
-  //   this.music.addEventListener("durationchange", () => {
-  //     this.music.currentTime = this.current_time;
-  //   });
-  // },
-  // watch: {
-  // TODO: Changer de musique quand elle est terminée
-  // },
+  mounted() {
+    //   this.music.src = this.musicSource;
+    //   this.duration = this.music.duration || 0;
+    //   this.music.addEventListener("timeupdate", () => {
+    //     this.duration = Math.round(this.music.duration) || 0;
+    //     this.current_time = this.music.currentTime;
+    //   });
+    //   this.music.addEventListener("durationchange", () => {
+    //     this.music.currentTime = this.current_time;
+    //   });
+    // },
+    // watch: {
+    // TODO: Changer de musique quand elle est terminée
+  },
 };
 </script>
 

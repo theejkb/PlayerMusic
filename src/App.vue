@@ -10,9 +10,11 @@
           @playThisPlaylist="playThisPlaylist"
           @playThisPlaylistShuffle="playThisPlaylistShuffle"
           @playAllSongs="playAllSongs"
+          @playThisMusicPlaylist="playThisMusicPlaylist"
           @playThisMusic="playThisMusic"
         ></router-view>
       </v-main>
+
       <Player
         v-if="showPlayer == true"
         :currentSong="currentSong"
@@ -22,26 +24,43 @@
         @paused="paused"
         @showPlayerBig="showPlayerBig"
       />
-      <PlayerBig
-        v-if="showPlayerBig == true"
-        :currentSong="currentSong"
-        :isPlaying="isPlaying"
-        @nextSong="nextSong"
-        @playing="playing"
-        @paused="paused"
-        @playerBig="playerBig"
-      />
-      <v-bottom-navigation horizontal absolute>
+      <transition name="showPlayerBig">
+        <PlayerBig
+          v-if="isPlayerBigVisible == true"
+          :player="player"
+          :currentSong="currentSong"
+          :idMusic="idMusic"
+          :isPlaying="isPlaying"
+          :currentTimeParent="currentTime"
+          :durationParent="duration"
+          :songVolume="songVolume"
+          @nextSong="nextSong"
+          @previousSong="previousSong"
+          @playing="playing"
+          @paused="paused"
+          @leavePlayerBig="leavePlayerBig"
+          @currentTimeSeek="currentTimeSeek"
+          @setSongVolume="setSongVolume"
+          @playThisMusicPlayer="playThisMusicPlayer"
+        />
+      </transition>
+      <v-bottom-navigation
+        horizontal
+        absolute
+        v-if="isPlayerBigVisible == false"
+      >
         <router-link to="/" class="nav mr-5">
-          <v-icon color="grey" class="mt-2"
+          <v-icon color="grey" class="mt-2" @click="goToSongs"
             >mdi-music-box-multiple-outline</v-icon
           >
-          <p class="text-red">Songs</p>
+          <p class="text-red" @click="goToSongs">Songs</p>
         </router-link>
 
         <router-link to="/playlists" class="nav ml-5 mr-5">
-          <v-icon color="grey" class="mt-2">mdi-playlist-music</v-icon>
-          <p class="text-red">Playlist</p>
+          <v-icon color="grey" class="mt-2" @click="goToPlaylist"
+            >mdi-playlist-music</v-icon
+          >
+          <p class="text-red" @click="goToPlaylist">Playlist</p>
         </router-link>
 
         <router-link to="/playerSong" class="nav ml-5">
@@ -57,12 +76,14 @@
 
 <script>
 import Player from "./components/music/Player";
+import PlayerBig from "./components/music/PlayerBig";
 
 export default {
   name: "App",
 
   components: {
     Player,
+    PlayerBig,
   },
 
   data: () => ({
@@ -75,6 +96,9 @@ export default {
     isShuffle: false,
     isPlaying: false,
     isPlayerBigVisible: false,
+    duration: 0,
+    currentTime: 0,
+    songVolume: 0.5,
     musics: [
       {
         playlistId: 0,
@@ -161,6 +185,14 @@ export default {
             author: "Riot Games",
             liked: false,
           },
+          {
+            id: 1,
+            title: "The Curse of the Sad Mummy",
+            image: require("./assets/musics/img/mummy.jpg"),
+            mp3: require("./assets/musics/the-curse-of-the-sad-mummy-amumu-music-video-league-of-legends.mp3"),
+            author: "Riot Games",
+            liked: false,
+          },
         ],
       },
     ],
@@ -236,13 +268,19 @@ export default {
   methods: {
     showPlayerBig() {
       this.isPlayerBigVisible = true;
-    },
-    unshowPlayer() {
       this.showPlayer = false;
     },
-    showPlayerr() {
+    leavePlayerBig() {
+      this.isPlayerBigVisible = false;
       this.showPlayer = true;
-      this.idMusic = this.music.id;
+    },
+    goToSongs() {
+      this.isPlayerBigVisible = false;
+      this.showPlayer = true;
+    },
+    goToPlaylist() {
+      this.isPlayerBigVisible = false;
+      this.showPlayer = true;
     },
     getIdMusic(music) {
       this.idMusic = music.id;
@@ -252,6 +290,14 @@ export default {
     },
     paused() {
       this.music.pause();
+    },
+    currentTimeSeek(value) {
+      this.currentTime = value;
+      this.music.currentTime = this.currentTime;
+    },
+    setSongVolume(volume) {
+      this.songVolume = volume;
+      this.music.volume = this.songVolume;
     },
     changeSong() {
       //Reinitialisation des params des toutes les variables propres à this.music
@@ -266,11 +312,21 @@ export default {
       if (this.isShuffle == true) {
         this.shuffleId();
       } else {
-        if (this.allSongs[this.idMusic + 1]) {
+        if (this.player[this.idMusic + 1]) {
           this.idMusic += 1;
         } else {
           this.idMusic = 0;
         }
+      }
+      //On envoie le fichier mp3 de notre tableau à l'index souhaité
+      this.skipInverse = false;
+      this.changeSong();
+    },
+    previousSong() {
+      if (this.player[this.idMusic - 1]) {
+        this.idMusic -= 1;
+      } else {
+        this.idMusic = this.player.length - 1;
       }
       //On envoie le fichier mp3 de notre tableau à l'index souhaité
       this.skipInverse = false;
@@ -285,7 +341,13 @@ export default {
     },
     playThisMusic(music) {
       this.showPlayer = true;
+      this.player = this.allSongs;
       console.log("App -> playThisMusic");
+      this.idMusic = music.id;
+      this.music.src = this.currentSong.mp3;
+      this.playSong();
+    },
+    playThisMusicPlayer(music) {
       this.idMusic = music.id;
       this.music.src = this.currentSong.mp3;
       this.playSong();
@@ -317,7 +379,7 @@ export default {
     playAllSongsShuffle() {
       this.showPlayer = true;
       this.player = this.allSongs;
-      this.idMusic = this.entierAleatoire(0, this.player.length - 1);
+      this.shuffleId();
       this.isShuffle = true;
       this.playThisMusic(this.currentSong);
     },
@@ -326,8 +388,7 @@ export default {
       this.showPlayer = true;
       console.log("playThisPlaylist");
       this.player = this.musics.find((el) => el.playlistId === value).playlist;
-      this.idMusic = 0;
-      this.playThisMusic(this.currentSong);
+      this.playThisMusicPlayer(this.currentSong);
     },
     playThisPlaylistShuffle(value) {
       this.showPlayer = true;
@@ -335,7 +396,14 @@ export default {
       this.player = this.musics.find((el) => el.playlistId === value).playlist;
       this.isShuffle = true;
       this.shuffleId();
-      this.playThisMusic(this.currentSong);
+      this.playThisMusicPlayer(this.currentSong);
+    },
+    playThisMusicPlaylist(music, playlistId) {
+      console.log("---playThisMusicPlaylist---");
+      this.player = this.musics.find(
+        (el) => el.playlistId === playlistId
+      ).playlist;
+      this.playThisMusicPlayer(music);
     },
 
     playerImg() {
@@ -347,7 +415,7 @@ export default {
   },
   computed: {
     currentSong() {
-      return this.allSongs.find((el) => el.id === this.idMusic);
+      return this.player.find((el) => el.id === this.idMusic);
     },
   },
   created() {
@@ -366,11 +434,20 @@ export default {
       this.isPlaying = false;
       this.showPlayer = true;
     });
+    this.music.src = this.currentSong.mp3;
+    this.duration = this.music.duration || 0;
+    this.music.addEventListener("timeupdate", () => {
+      this.duration = Math.round(this.music.duration) || 0;
+      this.currentTime = this.music.currentTime;
+    });
+    this.music.addEventListener("durationchange", () => {
+      this.music.currentTime = this.currentTime;
+    });
   },
 };
 </script>
 
-<style scoped>
+<style>
 .Main {
   height: 100%;
 }
@@ -415,5 +492,17 @@ export default {
 }
 .router-link-exact-active .v-icon.v-icon {
   color: red !important;
+}
+
+.showPlayerBig-enter-active,
+.showPlayerBig-leave-active {
+  transition: 0.5s ease-in;
+}
+
+.showPlayerBig-leave-to {
+  transform: translate(-50%, 50%);
+}
+.showPlayerBig-enter {
+  transform: translate(-50%, 50%);
 }
 </style>
