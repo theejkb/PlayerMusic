@@ -49,19 +49,23 @@
         absolute
         v-if="isPlayerBigVisible == false"
       >
-        <router-link aria-label="songs" to="/" class="nav mr-5">
-          <v-icon color="grey" class="mt-2" @click="goToSongs"
+        <router-link to="/" class="nav mr-5">
+          <v-icon
+            aria-label="songs"
+            color="grey"
+            class="mt-2"
+            @click="goToSongs"
             >mdi-music-box-multiple-outline</v-icon
           >
           <p class="text-red" @click="goToSongs">Songs</p>
         </router-link>
 
-        <router-link
-          aria-label="playlist"
-          to="/playlists"
-          class="nav ml-5 mr-5"
-        >
-          <v-icon color="grey" class="mt-2" @click="goToPlaylist"
+        <router-link to="/playlists" class="nav ml-5 mr-5">
+          <v-icon
+            aria-label="playlist"
+            color="grey"
+            class="mt-2"
+            @click="goToPlaylist"
             >mdi-playlist-music</v-icon
           >
           <p class="text-red" @click="goToPlaylist">Playlist</p>
@@ -183,18 +187,18 @@ export default {
         playlist: [
           {
             id: 0,
-            title: "The Curse of the Sad Mummy",
-            image: require("./assets/musics/img/mummy.jpg"),
-            mp3: require("./assets/musics/the-curse-of-the-sad-mummy-amumu-music-video-league-of-legends.mp3"),
-            author: "Riot Games",
+            title: "Mask Off",
+            image: require("./assets/musics/img/maskoff.jpg"),
+            mp3: require("./assets/musics/future-mask-off-official-music-video.mp3"),
+            author: "Future",
             liked: false,
           },
           {
             id: 1,
-            title: "The Curse of the Sad Mummy",
-            image: require("./assets/musics/img/mummy.jpg"),
-            mp3: require("./assets/musics/the-curse-of-the-sad-mummy-amumu-music-video-league-of-legends.mp3"),
-            author: "Riot Games",
+            title: "SCKO MODE",
+            image: require("./assets/musics/img/sickomode.jpg"),
+            mp3: require("./assets/musics/travis-scott-sicko-mode-ft-drake-official-video.mp3"),
+            author: "Travis Scott (Ft. Drake)",
             liked: false,
           },
         ],
@@ -264,6 +268,22 @@ export default {
         image: require("./assets/musics/img/getJinxed.jpg"),
         mp3: require("./assets/musics/get-jinxed-jinx-music-video-league-of-legends.mp3"),
         author: "Riot Games",
+        liked: false,
+      },
+      {
+        id: 8,
+        title: "Mask Off",
+        image: require("./assets/musics/img/maskoff.jpg"),
+        mp3: require("./assets/musics/future-mask-off-official-music-video.mp3"),
+        author: "Future",
+        liked: false,
+      },
+      {
+        id: 9,
+        title: "SCKO MODE",
+        image: require("./assets/musics/img/sickomode.jpg"),
+        mp3: require("./assets/musics/travis-scott-sicko-mode-ft-drake-official-video.mp3"),
+        author: "Travis Scott (Ft. Drake)",
         liked: false,
       },
     ],
@@ -444,6 +464,9 @@ export default {
     });
     this.music.addEventListener("durationchange", () => {
       this.music.currentTime = this.currentTime;
+    });
+    this.music.addEventListener("ended", () => {
+      this.nextSong();
     });
   },
 };

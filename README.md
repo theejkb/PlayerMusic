@@ -1,4 +1,4 @@
-# PWA Song
+# PWA - PlaylistSongs
 
 ## Project setup
 

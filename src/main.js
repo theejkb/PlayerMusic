@@ -3,11 +3,11 @@ import App from "./App.vue";
 import vuetify from "./plugins/vuetify";
 import VueRouter from "vue-router";
 
-import wb from "./registerServiceWorker";
+// import wb from "./registerServiceWorker";
 import "animate.css/source/animate.css";
 
 Vue.use(VueRouter);
-Vue.prototype.$workbox = wb;
+// Vue.prototype.$workbox = wb;
 
 const routes = [
   // {
