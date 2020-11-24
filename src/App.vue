@@ -434,8 +434,6 @@ export default {
       this.isPlaying = false;
       this.showPlayer = true;
     });
-    this.music.src = this.currentSong.mp3;
-    this.duration = this.music.duration || 0;
     this.music.addEventListener("timeupdate", () => {
       this.duration = Math.round(this.music.duration) || 0;
       this.currentTime = this.music.currentTime;
