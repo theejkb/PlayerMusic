@@ -9,7 +9,12 @@
     <div v-if="showPlaylists">
       <div class="d-flex justify-space-between">
         <p>Playing Next</p>
-        <v-btn @click="shuffleMusics(musics)" elevation="0" color="white">
+        <v-btn
+          @click="shuffleMusics(musics)"
+          elevation="0"
+          color="white"
+          aria-label="shuffle"
+        >
           <v-icon>mdi-shuffle</v-icon>
         </v-btn>
       </div>
@@ -44,6 +49,7 @@
       <v-btn
         @click="previous"
         class="ml-2 mt-3"
+        aria-label="previous"
         fab
         icon
         height="40px"
@@ -56,6 +62,7 @@
         <v-btn
           @click="handleBtnPlaying()"
           class="ml-2 mt-3"
+          aria-label="play/pause"
           fab
           icon
           height="40px"
@@ -69,6 +76,7 @@
       <v-btn
         @click="next"
         class="ml-2 mt-3"
+        aria-label="next"
         fab
         icon
         height="40px"
@@ -108,8 +116,11 @@
         @input="songVolume"
         v-model="volume"
       ></knob-control>
-      <v-icon class="mx-5" @click="showPlaylist">mdi-library</v-icon>
+      <v-icon aria-label="playlist" class="mx-5" @click="showPlaylist"
+        >mdi-library</v-icon
+      >
       <v-icon
+        aria-label="like"
         class="mx-5"
         @click="handleBtnLike(currentSong)"
         :color="colorSongLiked"

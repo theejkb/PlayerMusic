@@ -69,7 +69,7 @@
             <b>{{ displayName }}</b>
           </v-card-text>
           <div class="d-flex justify-center">
-            <v-btn class="play mr-2" elevation="0">
+            <v-btn aria-label="play" class="play mr-2" elevation="0">
               <v-icon color="red">mdi-play</v-icon>
               <p
                 class="text-display my-auto ml-2"
@@ -78,7 +78,7 @@
                 Play
               </p>
             </v-btn>
-            <v-btn class="play ml-2" elevation="0">
+            <v-btn aria-label="shuffle" class="play ml-2" elevation="0">
               <v-icon color="red">mdi-shuffle</v-icon>
               <p
                 class="text-display my-auto ml-2"

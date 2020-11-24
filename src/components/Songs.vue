@@ -9,11 +9,11 @@
     <div class="test">
       <div class="songs-container">
         <div class="d-flex justify-center mb-5">
-          <v-btn class="play mr-2" elevation="0">
+          <v-btn aria-label="play" class="play mr-2" elevation="0">
             <v-icon color="red">mdi-play</v-icon>
             <p class="text-display my-auto ml-2" @click="playAllSongs">Play</p>
           </v-btn>
-          <v-btn class="play ml-2" elevation="0">
+          <v-btn aria-label="pause" class="play ml-2" elevation="0">
             <v-icon color="red">mdi-shuffle</v-icon>
             <p class="text-display my-auto ml-2" @click="playAllSongsShuffle">
               Shuffle

@@ -1,29 +1,16 @@
 <template>
-<div>  
-   
-</div>
+  <div></div>
 </template>
 
 <script>
-
-
 export default {
-    name: "Search",
-    
-    components: {
-      
-    },
-    data: function () {
-       
-    },
-    methods: {
-        
-    },
-    watch: {
-       
-    },
+  name: "Search",
+
+  components: {},
+  data: function () {},
+  methods: {},
+  watch: {},
 };
 </script>
 <style>
-
 </style>

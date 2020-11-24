@@ -49,26 +49,30 @@
         absolute
         v-if="isPlayerBigVisible == false"
       >
-        <router-link to="/" class="nav mr-5">
+        <router-link aria-label="songs" to="/" class="nav mr-5">
           <v-icon color="grey" class="mt-2" @click="goToSongs"
             >mdi-music-box-multiple-outline</v-icon
           >
           <p class="text-red" @click="goToSongs">Songs</p>
         </router-link>
 
-        <router-link to="/playlists" class="nav ml-5 mr-5">
+        <router-link
+          aria-label="playlist"
+          to="/playlists"
+          class="nav ml-5 mr-5"
+        >
           <v-icon color="grey" class="mt-2" @click="goToPlaylist"
             >mdi-playlist-music</v-icon
           >
           <p class="text-red" @click="goToPlaylist">Playlist</p>
         </router-link>
 
-        <router-link to="/playerSong" class="nav ml-5">
+        <!--<router-link to="/playerSong" class="nav ml-5">
           <v-icon color="grey" color-active="red" class="mt-2"
             >mdi-card-search-outline</v-icon
           >
           <p class="text-red">Player</p>
-        </router-link>
+        </router-link>-->
       </v-bottom-navigation>
     </v-card>
   </v-app>

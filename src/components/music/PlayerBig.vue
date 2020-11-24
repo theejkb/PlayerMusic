@@ -15,7 +15,12 @@
     <div v-if="showPlaylists">
       <div class="d-flex justify-space-between">
         <p>Playing Next</p>
-        <v-btn @click="shuffleMusics(musics)" elevation="0" color="white">
+        <v-btn
+          aria-label="shuffle"
+          @click="shuffleMusics(musics)"
+          elevation="0"
+          color="white"
+        >
           <v-icon>mdi-shuffle</v-icon>
         </v-btn>
       </div>

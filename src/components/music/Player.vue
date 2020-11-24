@@ -15,14 +15,19 @@
           <v-spacer></v-spacer>
 
           <v-list-item-icon>
-            <v-btn @click="handleBtnPlaying()" icon color="black">
+            <v-btn
+              aria-label="play/pause"
+              @click="handleBtnPlaying()"
+              icon
+              color="black"
+            >
               <v-icon v-if="isPlaying == false">mdi-play</v-icon>
               <v-icon v-else>mdi-pause</v-icon>
             </v-btn>
           </v-list-item-icon>
 
           <v-list-item-icon>
-            <v-btn icon @click="next">
+            <v-btn aria-label="next" icon @click="next">
               <v-icon color="black">mdi-skip-next</v-icon>
             </v-btn>
           </v-list-item-icon>
