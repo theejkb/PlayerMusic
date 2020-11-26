@@ -24,11 +24,6 @@ const routes = [
     name: "Playlist",
     component: () => import("./components/Playlist.vue"),
   },
-  {
-    path: "/playerSong",
-    name: "PlayerSong",
-    component: () => import("./components/PlayerSong.vue"),
-  },
 ];
 const router = new VueRouter({
   routes,

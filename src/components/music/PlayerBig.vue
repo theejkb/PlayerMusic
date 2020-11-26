@@ -94,23 +94,7 @@
         <v-icon>mdi-skip-next</v-icon>
       </v-btn>
     </div>
-
-    <!-- <v-card-text>
-       <v-slider
-        v-model="volume"
-        @input="songVolume"
-        thumb-color="black"
-        track-color="rgba(0,0,0,0.08)"
-        color="black"
-        step="0.01"
-        min="0"
-        max="1"
-        append-icon="mdi-volume-high"
-        prepend-icon="mdi-volume-low"
-      ></v-slider>
-    </v-card-text>-->
     <v-card-text class="d-flex"></v-card-text>
-
     <div class="d-flex justify-end mb-5 align-baseline mx-5">
       <knob-control
         class="mr-auto"
@@ -247,13 +231,6 @@ export default {
       this.songVolume = Number(this.songVolume.toFixed(2));
       this.$emit("setSongVolume", this.songVolume);
     },
-    shuffleMusics(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-      return array;
-    },
     handleBtnLike(music) {
       this.$emit("handleLikedSong", music);
       if (this.isSongLiked) {
@@ -276,7 +253,6 @@ export default {
       this.unlikeSong();
     }
   },
-  computed: {},
 };
 </script>
 
