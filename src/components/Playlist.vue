@@ -183,22 +183,22 @@ export default {
   color: red;
 }
 .playlistOpen {
-  position: absolute;
-  left: auto;
-  right: auto;
-  height: 87.9%;
-  width: 90%;
+  width: 100%;
   overflow: scroll;
+  padding-bottom: 25px;
+  max-height: 74vh;
+  overflow-x: hidden;
 }
 .playlists {
-  position: absolute;
   width: 100%;
-  left: auto;
-  right: auto;
+  overflow: scroll;
+  padding-bottom: 25px;
+  max-height: 74vh;
+  overflow-x: hidden;
 }
 .playlistParent {
   width: 100%;
-  height: 100%;
+  height: 85%;
   --animate-duration: 0.5s;
 }
 .displayText {
@@ -211,5 +211,6 @@ hr {
   width: auto;
   margin: -10px 20px;
   height: 1px;
+  background-color: transparent;
 }
 </style>

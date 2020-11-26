@@ -285,13 +285,11 @@ export default {
 
 <style scoped>
 .PlayerBottom {
-  right: 0;
-  bottom: 125px;
-  left: 0;
+  position: absolute;
+  bottom: 50px;
+  width: 100%;
 }
-.playerMusic {
-  overflow: visible !important;
-}
+
 .v-sheet.v-card {
   border-radius: 0 !important;
 }

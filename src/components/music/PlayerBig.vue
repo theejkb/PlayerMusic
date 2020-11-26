@@ -4,7 +4,9 @@
       class="background"
       :style="{ backgroundImage: 'url(' + currentSong.image + ')' }"
     ></div>-->
-    <hr class="mr-auto ml-auto mt-10 px-5" @click="leavePlayerBig" />
+    <v-icon large class="mx-auto d-block mt-8" @click="leavePlayerBig"
+      >mdi-window-close</v-icon
+    >
 
     <Music
       class="mt-10"
@@ -36,15 +38,19 @@
       <v-slider
         v-model="currentTime"
         @change="seeking(currentTime)"
+        @click="currentTime"
         step="1"
         min="0"
         :max="durationParent"
         track-color="#E7E7E7"
+        thumb-color="#AFAFAF"
         color="#AFAFAF"
+        class="mb-n9"
       ></v-slider>
       <v-card
         elevation="0"
-        class="mt-n9 mr-2 ml-2 d-flex justify-space-between"
+        class="mr-2 ml-2 d-flex justify-space-between"
+        style="background: transparent"
       >
         <span>{{ getMusicTime() }}</span>
         <span>{{ getMusicTimeEnd() }}</span>
@@ -65,7 +71,7 @@
       <v-card-actions>
         <v-btn
           @click="handleBtnPlaying()"
-          class="ml-2 mt-3"
+          class="ml-2 mt-1"
           fab
           icon
           height="40px"
@@ -152,11 +158,10 @@ export default {
     skipInverse: false,
     showPlaylists: false,
     showPlaylist_var: "",
-    likedSong: [],
     colorSongLiked: "",
-    songLiked: false,
     currentTime: "",
     songVolume: 0.5,
+    isSongLikedChild: false,
   }),
   props: {
     player: Array,
@@ -166,6 +171,7 @@ export default {
     durationParent: Number,
     currentTimeParent: Number,
     volumeParent: Number,
+    isSongLiked: Boolean,
   },
   methods: {
     leavePlayerBig() {
@@ -249,43 +255,27 @@ export default {
       return array;
     },
     handleBtnLike(music) {
-      let song = {};
-      song.title = music.title;
-      song.mp3 = music.mp3;
-      song.author = music.author;
-      song.image = music.image;
-      song.id = music.id;
-      console.log(song.id);
-
-      song.liked = music.liked;
-      if (music.liked == false) {
-        song.liked = true;
-        this.likeSong();
-        this.likedSong.push(song);
-      } else {
+      this.$emit("handleLikedSong", music);
+      if (this.isSongLiked) {
         this.unlikeSong();
-        // Remove a song when unlicked
-        let val = this.likedSong.indexOf(song.id);
-        this.likedSong.splice(val, 1);
+      } else {
+        this.likeSong();
       }
     },
     likeSong() {
       this.colorSongLiked = "red";
-      this.currentSong.liked = true;
     },
     unlikeSong() {
       this.colorSongLiked = "";
-      this.currentSong.liked = false;
-    },
-    checkLikedSong() {
-      if (this.currentSong.liked == true) {
-        this.colorSongLiked = "red";
-      } else {
-        this.colorSongLiked = "";
-      }
     },
   },
-  created() {},
+  created() {
+    if (this.isSongLiked) {
+      this.likeSong();
+    } else {
+      this.unlikeSong();
+    }
+  },
   computed: {},
 };
 </script>

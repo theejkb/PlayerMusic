@@ -85,13 +85,22 @@ export default {
   border-radius: 0 !important;
 }
 
-.image-music {
-  width: 50%;
-  height: 50%;
-  min-height: 300px;
-  min-width: 300px;
-  margin-left: auto;
-  margin-right: auto;
+@media screen and (max-height: 1000px) {
+  .image-music {
+    width: 400px;
+    height: 250px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media screen and (max-height: 850px) {
+  .image-music {
+    width: 300px;
+    height: 200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 
 @media screen and (max-width: 500px) {

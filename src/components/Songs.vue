@@ -1,5 +1,5 @@
 <template>
-  <div class>
+  <div class="Songs">
     <h1 class="d-flex justify-center mt-5 mb-5">Songs</h1>
     <v-text-field
       color="red"
@@ -8,7 +8,7 @@
     ></v-text-field>
     <div class="test">
       <div class="songs-container">
-        <div class="d-flex justify-center mb-5">
+        <div class="d-flex justify-center mb-10">
           <v-btn aria-label="play" class="play mr-2" elevation="0">
             <v-icon color="red">mdi-play</v-icon>
             <p class="text-display my-auto ml-2" @click="playAllSongs">Play</p>
@@ -21,6 +21,7 @@
           </v-btn>
         </div>
         <div
+          class="mt-n5"
           v-for="music in searchMusic"
           :key="music.id"
           @click="playThisMusic(music)"
@@ -41,7 +42,7 @@
               </v-card-text>
             </div>
           </div>
-          <hr />
+          <hr class="mt-n1" />
         </div>
       </div>
     </div>
@@ -90,11 +91,19 @@ export default {
 </script>
 <style scoped>
 .songs-container {
-  position: fixed;
-  height: 65%;
   width: 100%;
   overflow: scroll;
   padding-bottom: 25px;
+  max-height: 54vh;
+  overflow-x: hidden;
+}
+@media screen and (max-width: 500px) {
+  .songs-container {
+    width: 100%;
+    overflow: scroll;
+    max-height: 60vh;
+    overflow-x: hidden;
+  }
 }
 .displayText {
   white-space: nowrap;
@@ -105,7 +114,8 @@ export default {
 
 hr {
   width: auto;
-  margin: -10px 60px;
+  margin: 0px 60px;
   height: 1px;
+  background-color: transparent;
 }
 </style>
