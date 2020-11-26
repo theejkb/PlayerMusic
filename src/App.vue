@@ -25,7 +25,6 @@
           @showPlayerBig="showPlayerBig"
         />
       </v-main>
-
       <transition name="showPlayerBig">
         <PlayerBig
           v-if="isPlayerBigVisible == true"
@@ -46,7 +45,6 @@
           @currentTimeSeek="currentTimeSeek"
           @setSongVolume="setSongVolume"
           @playThisMusicPlayer="playThisMusicPlayer"
-          ref="PlayerBig"
         />
       </transition>
       <v-bottom-navigation
@@ -64,7 +62,6 @@
           >
           <p class="text-red" @click="goToSongs">Songs</p>
         </router-link>
-
         <router-link to="/playlists" class="nav ml-5 mr-5">
           <v-icon
             aria-label="playlist"
@@ -75,13 +72,6 @@
           >
           <p class="text-red" @click="goToPlaylist">Playlist</p>
         </router-link>
-
-        <!--<router-link to="/playerSong" class="nav ml-5">
-          <v-icon color="grey" color-active="red" class="mt-2"
-            >mdi-card-search-outline</v-icon
-          >
-          <p class="text-red">Player</p>
-        </router-link>-->
       </v-bottom-navigation>
     </v-card>
   </v-app>
@@ -360,10 +350,8 @@ export default {
     },
 
     changeSong() {
-      //Reinitialisation des params des toutes les variables propres à this.music
       this.music.pause();
       this.current_time = 0;
-      console.log(this.currentSong.mp3);
       this.music.src = this.currentSong.mp3;
       this.checkLikedSong();
       this.playSong();
@@ -418,7 +406,6 @@ export default {
     playThisMusic(music) {
       this.showPlayer = true;
       this.player = this.allSongs;
-      console.log("App -> playThisMusic");
       this.idMusic = music.id;
       this.music.src = this.currentSong.mp3;
       this.playSong();
@@ -462,20 +449,17 @@ export default {
 
     playThisPlaylist(value) {
       this.showPlayer = true;
-      console.log("playThisPlaylist");
       this.player = this.musics.find((el) => el.playlistId === value).playlist;
       this.playThisMusicPlayer(this.currentSong);
     },
     playThisPlaylistShuffle(value) {
       this.showPlayer = true;
-      console.log("playThisPlaylistShuffle");
       this.player = this.musics.find((el) => el.playlistId === value).playlist;
       this.isShuffle = true;
       this.shuffleId();
       this.playThisMusicPlayer(this.currentSong);
     },
     playThisMusicPlaylist(music, playlistId) {
-      console.log("---playThisMusicPlaylist---");
       this.player = this.musics.find(
         (el) => el.playlistId === playlistId
       ).playlist;

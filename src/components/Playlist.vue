@@ -138,9 +138,6 @@ export default {
   methods: {
     openPlaylist(playlist) {
       this.displayPlaylist = [...playlist.playlist];
-      console.log(playlist.playlist);
-      console.log(this.displayingPlaylist);
-
       this.displayName = playlist.playlistName;
       this.displayImg = playlist.playlistImg;
       this.playlistId = playlist.playlistId;
@@ -160,8 +157,6 @@ export default {
       this.$emit("playThisPlaylistShuffle", playlistId);
     },
     playThisMusicPlaylist(music, playlistId) {
-      console.log(music);
-      console.log(playlistId);
       this.$emit("playThisMusicPlaylist", music, playlistId);
     },
   },

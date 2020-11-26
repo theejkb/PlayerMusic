@@ -16,7 +16,6 @@
           </div>
         </div>
       </div>
-
       <div v-else>
         <v-img class="mt-5 image-music">
           <transition :name="skipInverse ? 'fade' : 'fade-inverse'">
@@ -33,7 +32,6 @@
               <b>{{ this.music.title }}</b>
             </div>
           </v-card-text>
-
           <v-card-subtitle class="subtitle">
             <div>{{ this.music.author }}</div>
           </v-card-subtitle>
