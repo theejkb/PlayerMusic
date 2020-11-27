@@ -35,6 +35,14 @@
       </div>
     </div>
     <v-card-text>
+      <v-card
+        elevation="0"
+        class="mr-2 ml-2 mt-n2 mb-n3 d-flex justify-space-between"
+        style="background: transparent"
+      >
+        <span>{{ getMusicTime() }}</span>
+        <span>{{ getMusicTimeEnd() }}</span>
+      </v-card>
       <v-slider
         v-model="currentTime"
         @change="seeking(currentTime)"
@@ -47,14 +55,6 @@
         color="#AFAFAF"
         class="mb-n9"
       ></v-slider>
-      <v-card
-        elevation="0"
-        class="mr-2 ml-2 d-flex justify-space-between"
-        style="background: transparent"
-      >
-        <span>{{ getMusicTime() }}</span>
-        <span>{{ getMusicTimeEnd() }}</span>
-      </v-card>
     </v-card-text>
     <div class="d-flex justify-space-around">
       <v-btn
