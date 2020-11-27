@@ -36,6 +36,10 @@
           :durationParent="duration"
           :songVolume="songVolume"
           :isSongLiked="isSongLiked"
+          :skipInverse="skipInverse"
+          :colorSongLiked="colorSongLiked"
+          @likeSong="likeSong"
+          @unlikeSong="unlikeSong"
           @handleLikedSong="handleLikedSong"
           @nextSong="nextSong"
           @previousSong="previousSong"
@@ -45,6 +49,7 @@
           @currentTimeSeek="currentTimeSeek"
           @setSongVolume="setSongVolume"
           @playThisMusicPlayer="playThisMusicPlayer"
+          ref="PlayerBig"
         />
       </transition>
       <v-bottom-navigation
@@ -100,9 +105,11 @@ export default {
     isPlaying: false,
     isPlayerBigVisible: false,
     duration: 0,
+    colorSongLiked: "",
     currentTime: 0,
     songVolume: 0.5,
     isSongLiked: false,
+    skipInverse: false,
     musics: [
       {
         playlistId: 0,
@@ -342,15 +349,16 @@ export default {
       if (this.isSongLiked) {
         playlistLiked.push(song);
         this.isSongLiked = true;
+        this.likeSong();
       } else {
         let val = playlistLiked.indexOf(this.currentSong);
         playlistLiked.splice(val, 1);
         this.isSongLiked = false;
+        this.unlikeSong();
       }
     },
 
     changeSong() {
-      this.music.pause();
       this.current_time = 0;
       this.music.src = this.currentSong.mp3;
       this.checkLikedSong();
@@ -363,11 +371,17 @@ export default {
 
       if (playlistLiked.find((el) => el.mp3 == this.currentSong.mp3)) {
         this.isSongLiked = true;
-        this.$refs.PlayerBig.likeSong();
+        this.likeSong();
       } else {
         this.isSongLiked = false;
-        this.$refs.PlayerBig.unlikeSong();
+        this.unlikeSong();
       }
+    },
+    likeSong() {
+      this.colorSongLiked = "red";
+    },
+    unlikeSong() {
+      this.colorSongLiked = "";
     },
 
     nextSong() {
@@ -382,7 +396,7 @@ export default {
       }
 
       //On envoie le fichier mp3 de notre tableau à l'index souhaité
-      this.skipInverse = true;
+      this.skipInverse = false;
       this.changeSong();
     },
 
@@ -393,7 +407,7 @@ export default {
         this.idMusic = this.player.length - 1;
       }
       //On envoie le fichier mp3 de notre tableau à l'index souhaité
-      this.skipInverse = false;
+      this.skipInverse = true;
       this.changeSong();
     },
     shuffleId() {
@@ -465,7 +479,6 @@ export default {
       ).playlist;
       this.playThisMusicPlayer(music);
     },
-
     playerImg() {
       return "" + this.player.img;
     },

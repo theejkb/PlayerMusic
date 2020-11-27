@@ -65,7 +65,6 @@ export default {
   methods: {
     playThisMusic(music) {
       this.$emit("playThisMusic", music);
-      console.log(music);
     },
     playAllSongs() {
       this.$emit("playAllSongs");

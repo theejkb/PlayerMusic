@@ -139,16 +139,15 @@ export default {
     music_playing: -1,
     current_time_affichage: "0:00",
     end_time_affichage: "0:00",
-    skipInverse: false,
     showPlaylists: false,
     showPlaylist_var: "",
-    colorSongLiked: "",
     currentTime: "",
     songVolume: 0.5,
     isSongLikedChild: false,
   }),
   props: {
     player: Array,
+    skipInverse: Boolean,
     idMusic: Number,
     currentSong: Object,
     isPlaying: Boolean,
@@ -156,6 +155,7 @@ export default {
     currentTimeParent: Number,
     volumeParent: Number,
     isSongLiked: Boolean,
+    colorSongLiked: String,
   },
   methods: {
     leavePlayerBig() {
@@ -172,11 +172,9 @@ export default {
     },
     previous() {
       this.$emit("previousSong");
-      this.skipInverse = true;
     },
     next() {
       this.$emit("nextSong");
-      this.skipInverse = false;
     },
     handleBtnPlaying() {
       if (this.isPlaying) {
@@ -233,24 +231,18 @@ export default {
     },
     handleBtnLike(music) {
       this.$emit("handleLikedSong", music);
-      if (this.isSongLiked) {
-        this.unlikeSong();
+      if (!this.isSongLiked) {
+        this.$emit("likeSong");
       } else {
-        this.likeSong();
+        this.$emit("unlikeSong");
       }
-    },
-    likeSong() {
-      this.colorSongLiked = "red";
-    },
-    unlikeSong() {
-      this.colorSongLiked = "";
     },
   },
   created() {
     if (this.isSongLiked) {
-      this.likeSong();
+      this.$emit("likeSong");
     } else {
-      this.unlikeSong();
+      this.$emit("unlikeSong");
     }
   },
 };
