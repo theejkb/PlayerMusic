@@ -208,7 +208,7 @@ hr {
   background-color: transparent;
 }
 .ligne {
-  width: 80vh;
+  width: 80%;
   margin-left: 66px;
 }
 </style>
