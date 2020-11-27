@@ -456,13 +456,15 @@ export default {
     playAllSongsShuffle() {
       this.showPlayer = true;
       this.player = this.allSongs;
-      this.shuffleId();
       this.isShuffle = true;
+      this.shuffleId();
       this.playThisMusic(this.currentSong);
     },
 
     playThisPlaylist(value) {
       this.showPlayer = true;
+      this.isShuffle = false;
+      this.idMusic = 0;
       this.player = this.musics.find((el) => el.playlistId === value).playlist;
       this.playThisMusicPlayer(this.currentSong);
     },

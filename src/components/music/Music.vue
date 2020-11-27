@@ -3,8 +3,8 @@
     <transition :name="checkReduceImage()">
       <div v-if="affichage == 'small'" key="2">
         <div class="d-flex justify-start">
-          <div class="mt-5 ml-2 image-small rounded-sm">
-            <v-img :src="music.image" :key="music.id" max-width="100px" />
+          <div class="mt-5 ml-2 image-small rounded-xl">
+            <v-img :src="music.image" :key="music.id" />
           </div>
           <div :class="displayText">
             <v-card-text class="text--primary mt-2">
@@ -80,7 +80,6 @@ export default {
   height: 70px !important;
   width: 100px !important;
   transition: 0.3s ease;
-  border-radius: 0 !important;
 }
 
 @media screen and (max-height: 1000px) {

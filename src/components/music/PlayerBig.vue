@@ -107,8 +107,11 @@
         text-color="#636363"
         @input="emitSongVolume"
         v-model="songVolume"
-      ></knob-control>
-      <v-icon class="mx-5" @click="showPlaylist">mdi-library</v-icon>
+      >
+      </knob-control>
+      <v-icon class="mx-5" @click="showPlaylist"
+        >mdi-format-list-bulleted-square</v-icon
+      >
       <v-icon
         class="mx-5"
         @click="handleBtnLike(currentSong)"
@@ -260,8 +263,9 @@ export default {
   filter: blur(5rem);
 }
 .musics-container {
-  height: 350px;
+  height: 30vh;
   overflow: scroll;
+  overflow-x: hidden;
 }
 .mainBigPlayer {
   position: absolute;

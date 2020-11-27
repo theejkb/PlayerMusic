@@ -111,7 +111,7 @@
                   </v-card-text>
                 </div>
               </div>
-              <hr />
+              <hr class="ligne" />
             </div>
           </div>
         </div>
@@ -207,5 +207,9 @@ hr {
   margin: -10px 20px;
   height: 1px;
   background-color: transparent;
+}
+.ligne {
+  width: 80vh;
+  margin-left: 66px;
 }
 </style>
