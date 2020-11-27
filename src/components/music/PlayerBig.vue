@@ -1,13 +1,8 @@
 <template>
   <div class="mainBigPlayer pl-5 pr-5">
-    <!--<div
-      class="background"
-      :style="{ backgroundImage: 'url(' + currentSong.image + ')' }"
-    ></div>-->
     <v-icon large class="mx-auto d-block mt-8" @click="leavePlayerBig"
       >mdi-window-close</v-icon
     >
-
     <Music
       class="mt-10"
       :affichage="showPlaylist_var"

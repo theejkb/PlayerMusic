@@ -8,12 +8,10 @@
             @click="showPlayerBig"
             :src="currentSong.image"
           />
-
           <v-card-text @click="showPlayerBig">
             <b>{{ currentSong.title }}</b>
           </v-card-text>
           <v-spacer></v-spacer>
-
           <v-list-item-icon>
             <v-btn
               aria-label="play/pause"
@@ -25,7 +23,6 @@
               <v-icon v-else>mdi-pause</v-icon>
             </v-btn>
           </v-list-item-icon>
-
           <v-list-item-icon>
             <v-btn aria-label="next" icon @click="next">
               <v-icon color="black">mdi-skip-next</v-icon>

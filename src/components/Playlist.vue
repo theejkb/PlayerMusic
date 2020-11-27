@@ -22,7 +22,6 @@
           </div>
         </div>
         <hr class="ml-15" />
-
         <div
           class="d-flex justify-start"
           v-for="(playlist, idx) in musics"
